@@ -74,6 +74,9 @@ android {
         if (localRobolectricDir.exists()) {
           testTask.systemProperty("robolectric.offline", "true")
           testTask.systemProperty("robolectric.dependency.dir", localRobolectricDir.absolutePath)
+          testTask.systemProperty("robolectric.enabledSdks", "36")
+        } else {
+          testTask.systemProperty("robolectric.enabledSdks", "34")
         }
       }
     }
