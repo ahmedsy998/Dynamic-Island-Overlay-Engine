@@ -2,5 +2,7 @@
   "name": "Nexa Island",
   "description": "تطبيق الجزيرة التفاعلية (Dynamic Island) المتكامل لنظام أندرويد مع إشعارات فورية، 7 أنماط تصميم تشمل One UI 9، ودعم كامل للغة العربية وواجهات HyperOS.",
   "requestFramePermissions": [],
-  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+  "majorCapabilities": [
+    "MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"
+  ]
 }
