@@ -139,10 +139,21 @@ fun NexaIslandRootApp(viewModel: NexaIslandViewModel) {
 
     val activeEvent = queue.getOrNull(selectedIndex.coerceIn(0, (queue.size - 1).coerceAtLeast(0)))
 
-    CompositionLocalProvider(
-        LocalContext provides localizedContext,
-        LocalLayoutDirection provides layoutDirection
-    ) {
+    val activityResultOwner = androidx.activity.compose.LocalActivityResultRegistryOwner.current
+    val backPressedOwner = androidx.activity.compose.LocalOnBackPressedDispatcherOwner.current
+
+    val providedValues = buildList {
+        add(LocalContext provides localizedContext)
+        add(LocalLayoutDirection provides layoutDirection)
+        if (activityResultOwner != null) {
+            add(androidx.activity.compose.LocalActivityResultRegistryOwner provides activityResultOwner)
+        }
+        if (backPressedOwner != null) {
+            add(androidx.activity.compose.LocalOnBackPressedDispatcherOwner provides backPressedOwner)
+        }
+    }.toTypedArray()
+
+    CompositionLocalProvider(*providedValues) {
         NexaIslandTheme(
             themeMode = config.themeMode,
             languageCode = config.languageCode,

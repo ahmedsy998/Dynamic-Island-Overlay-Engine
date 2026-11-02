@@ -1,6 +1,9 @@
 package com.example
 
 import android.content.Context
+import androidx.compose.ui.test.assertIsDisplayed
+import androidx.compose.ui.test.junit4.createAndroidComposeRule
+import androidx.compose.ui.test.onNodeWithTag
 import androidx.test.core.app.ApplicationProvider
 import com.example.model.ServiceDiagnosticsState
 import com.example.util.SystemPermissionHelper
@@ -8,6 +11,7 @@ import com.example.util.TextDirectionHelper
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertFalse
 import org.junit.Assert.assertTrue
+import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.robolectric.RobolectricTestRunner
@@ -16,6 +20,16 @@ import org.robolectric.annotation.Config
 @RunWith(RobolectricTestRunner::class)
 @Config(sdk = [36])
 class ExampleRobolectricTest {
+
+    @get:Rule
+    val composeTestRule = createAndroidComposeRule<MainActivity>()
+
+    @Test
+    fun `MainActivity launches DashboardScreen with localized context and ActivityResultRegistryOwner`() {
+        composeTestRule.waitForIdle()
+        composeTestRule.onNodeWithTag("live_preview_card").assertIsDisplayed()
+        composeTestRule.onNodeWithTag("master_enable_switch").assertIsDisplayed()
+    }
 
     @Test
     fun `app name and Arabic-first strings resolve accurately`() {

@@ -1,7 +1,10 @@
 package com.example.util
 
 import android.content.Context
+import android.content.ContextWrapper
+import android.content.res.AssetManager
 import android.content.res.Configuration
+import android.content.res.Resources
 import androidx.compose.ui.unit.LayoutDirection
 import java.util.Locale
 
@@ -40,7 +43,7 @@ object TextDirectionHelper {
 
     /**
      * Wraps an Android Context with the user's selected locale ("ar" by default, or "en")
-     * and configures layout direction so string resources and RTL/LTR layout resolve accurately.
+     * while preserving the ContextWrapper chain (such as ComponentActivity / ActivityResultRegistryOwner).
      */
     fun createLocalizedContext(baseContext: Context, languageCode: String): Context {
         val cleanLang = if (languageCode == "en") "en" else "ar"
@@ -49,6 +52,10 @@ object TextDirectionHelper {
         val config = Configuration(baseContext.resources.configuration)
         config.setLocale(locale)
         config.setLayoutDirection(locale)
-        return baseContext.createConfigurationContext(config)
+        val configContext = baseContext.createConfigurationContext(config)
+        return object : ContextWrapper(baseContext) {
+            override fun getResources(): Resources = configContext.resources
+            override fun getAssets(): AssetManager = configContext.assets
+        }
     }
 }
