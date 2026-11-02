@@ -1,0 +1,229 @@
+<resources>
+    <string name="app_name">Nexa Island</string>
+    <string name="app_subtitle">Smart Dynamic Island for Android</string>
+    <string name="service_notification_listener_label">Nexa Island Notification Service</string>
+
+    <!-- Navigation Tabs -->
+    <string name="nav_dashboard">Dashboard</string>
+    <string name="nav_styles">Styles</string>
+    <string name="nav_geometry">Geometry</string>
+    <string name="nav_hyperos">HyperOS &amp; System</string>
+    <string name="nav_settings">Settings</string>
+
+    <!-- Dashboard & Master Control -->
+    <string name="master_switch_title">Enable Nexa Dynamic Island</string>
+    <string name="master_switch_active_desc">Island is active and running in the background for real-time notifications</string>
+    <string name="master_switch_inactive_desc">Island is currently disabled — toggle the switch to start the overlay</string>
+    <string name="master_switch_missing_perms_desc">Island is enabled, but required permissions must be granted to operate</string>
+
+    <!-- Live Status Diagnostics (6 Distinct Real States) -->
+    <string name="diagnostics_card_title">Real-Time Service Diagnostics</string>
+    <string name="diag_user_pref">User Preference (Master Switch)</string>
+    <string name="diag_permissions_granted">Required System Permissions</string>
+    <string name="diag_listener_connected">Notification Listener Connection</string>
+    <string name="diag_overlay_service">Overlay Window Service</string>
+    <string name="diag_island_visible">Island Currently Visible on Screen</string>
+    <string name="diag_os_restrictions">OS &amp; Battery Restrictions</string>
+
+    <string name="status_enabled">Enabled</string>
+    <string name="status_disabled">Disabled</string>
+    <string name="status_granted">All Granted</string>
+    <string name="status_missing">Setup Needed</string>
+    <string name="status_connected">Connected &amp; Active</string>
+    <string name="status_disconnected">Disconnected</string>
+    <string name="status_running">Running Normally</string>
+    <string name="status_stopped">Stopped</string>
+    <string name="status_visible">Visible Now</string>
+    <string name="status_hidden">Hidden</string>
+    <string name="status_unrestricted">Unrestricted (Optimal)</string>
+    <string name="status_restricted">Restricted by OS</string>
+
+    <!-- Setup Checklist & Permissions -->
+    <string name="checklist_title">Setup Checklist &amp; Required Permissions</string>
+    <string name="checklist_subtitle">All notifications are processed strictly locally on your device. No data is ever transmitted externally.</string>
+    <string name="perm_overlay_title">Display Over Other Apps</string>
+    <string name="perm_overlay_desc">Required to render the floating Dynamic Island capsule at the top of the screen.</string>
+    <string name="perm_notification_listener_title">Notification Listener Access</string>
+    <string name="perm_notification_listener_desc">Required to detect incoming notifications, media sessions, and call states in real time.</string>
+    <string name="perm_post_notifications_title">Service Notifications (Android 13+)</string>
+    <string name="perm_post_notifications_desc">Allows showing the foreground service status and sending real test notifications.</string>
+    <string name="perm_battery_title">Unrestricted Battery Usage</string>
+    <string name="perm_battery_desc">Prevents Android and HyperOS from terminating the Dynamic Island in the background.</string>
+    <string name="action_grant">Grant</string>
+    <string name="action_configured">Configured</string>
+    <string name="action_open_settings">Open Settings</string>
+    <string name="action_reconnect">Reconnect</string>
+
+    <!-- Live Interactive Preview & Test Actions -->
+    <string name="live_preview_title">Live Interactive Dynamic Island Preview</string>
+    <string name="live_preview_hint">Tap the island to expand or collapse • Reflects your actual geometry and style settings</string>
+    <string name="test_actions_title">Real-Time State Triggers</string>
+    <string name="btn_test_notification">Send Real System Notification</string>
+    <string name="btn_test_call">Incoming Call State</string>
+    <string name="btn_test_music">Music Playback State</string>
+    <string name="btn_test_charging">Charging &amp; Battery State</string>
+    <string name="btn_test_timer">Active Countdown Timer</string>
+    <string name="btn_clear_queue">Clear Active Queue</string>
+
+    <!-- Island States & Content -->
+    <string name="island_idle_label">Nexa Ready</string>
+    <string name="island_charging_label">Charging</string>
+    <string name="island_battery_label">Battery</string>
+    <string name="island_incoming_call">Incoming Call</string>
+    <string name="island_ongoing_call">Ongoing Call</string>
+    <string name="island_timer_active">Active Timer</string>
+    <string name="island_music_playing">Now Playing</string>
+    <string name="island_sensitive_hidden">Private notification content hidden</string>
+    <string name="island_action_open">Open App</string>
+    <string name="island_action_dismiss">Dismiss</string>
+    <string name="island_action_collapse">Collapse</string>
+    <string name="island_action_next">Next</string>
+    <string name="island_action_prev">Prev</string>
+    <string name="island_queue_count">%1$d of %2$d</string>
+
+    <!-- Test Notification Payload -->
+    <string name="test_notif_channel_name">Nexa Island Test Notifications</string>
+    <string name="test_notif_title">Nexa Island Live Verification</string>
+    <string name="test_notif_body">Your Dynamic Island is working with full Arabic RTL, English LTR, and One UI 9 style support.</string>
+    <string name="fgs_channel_name">Dynamic Island Background Service</string>
+    <string name="fgs_notif_title">Nexa Island Active</string>
+    <string name="fgs_notif_body">Running event-driven Dynamic Island overlay in the background.</string>
+
+    <!-- 7 Notification Styles Gallery -->
+    <string name="styles_screen_title">Notification Style Gallery</string>
+    <string name="styles_screen_subtitle">Select your Dynamic Island visual preset and customize element visibility for real notifications</string>
+
+    <string name="style_minimal_black_title">Minimal Black Pill</string>
+    <string name="style_minimal_black_desc">A compact, clean obsidian-black pill with subtle animation and concise status details.</string>
+
+    <string name="style_glass_pill_title">Premium Glass-Inspired Pill</string>
+    <string name="style_glass_pill_desc">Refined translucent-inspired surface with specular rim highlights and balanced contrast.</string>
+
+    <string name="style_gradient_pill_title">Soft Gradient Pill</string>
+    <string name="style_gradient_pill_desc">Modern capsule rendered with configurable low-contrast atmospheric gradients.</string>
+
+    <string name="style_rounded_card_title">Rounded Notification Card</string>
+    <string name="style_rounded_card_desc">Spacious card displaying the application icon, title, message preview, and optional timestamp.</string>
+
+    <string name="style_compact_icon_title">Compact Icon-Only Style</string>
+    <string name="style_compact_icon_desc">Minimal indicator showing the application badge and status dot, expanding smoothly when tapped.</string>
+
+    <string name="style_expanded_card_title">Expanded Notification Card</string>
+    <string name="style_expanded_card_desc">Larger interactive card supporting multi-line messages and queued notification navigation.</string>
+
+    <string name="style_oneui9_title">Samsung One UI 9-Inspired Style</string>
+    <string name="style_oneui9_desc">Signature preset inspired by modern One UI 9 aesthetics: generous pill curvature, squircle app badge container, clear header hierarchy, and bilingual RTL/LTR alignment.</string>
+    <string name="style_oneui9_badge">Featured • One UI 9</string>
+
+    <!-- Style Shared Customizations -->
+    <string name="style_controls_title">Shared Style &amp; Element Controls</string>
+    <string name="toggle_show_app_icon">Show Application Icon</string>
+    <string name="toggle_show_app_name">Show Application Name</string>
+    <string name="toggle_show_title">Show Notification Title</string>
+    <string name="toggle_show_message">Show Message Preview</string>
+    <string name="toggle_show_timestamp">Show Timestamp</string>
+    <string name="toggle_group_same_app">Group Notifications from Same App</string>
+    <string name="toggle_auto_expand">Auto-Expand Incoming Notifications</string>
+    <string name="toggle_always_show_pill">Keep Idle Pill Visible When No Notification</string>
+
+    <!-- Geometry & Position Screen -->
+    <string name="geometry_screen_title">Position, Size &amp; Interactive Geometry</string>
+    <string name="geometry_screen_subtitle">Fine-tune island dimensions and cutout placement with real-time visual feedback</string>
+    <string name="slider_compact_width">Compact Pill Width (dp)</string>
+    <string name="slider_compact_height">Compact Pill Height (dp)</string>
+    <string name="slider_expanded_width">Expanded Card Width (dp)</string>
+    <string name="slider_expanded_height">Expanded Card Height (dp)</string>
+    <string name="slider_offset_x">Horizontal Offset X (dp)</string>
+    <string name="slider_offset_y">Vertical Offset Y from Top (dp)</string>
+    <string name="slider_corner_radius">Corner Radius (dp)</string>
+    <string name="slider_outer_margin">Outer Margin (dp)</string>
+    <string name="slider_icon_size">Notification Icon Size (dp)</string>
+    <string name="slider_text_scale">Typography Scale (%)</string>
+    <string name="slider_border_width">Border Thickness (dp)</string>
+    <string name="slider_shadow_elevation">Shadow Intensity (dp)</string>
+    <string name="slider_opacity">Surface Opacity (%)</string>
+    <string name="slider_anim_duration">Animation Duration (ms)</string>
+    <string name="slider_display_duration">Notification Display Duration (sec)</string>
+    <string name="btn_reset_geometry">Reset Geometry to Default</string>
+
+    <!-- Palette & Color Customization -->
+    <string name="palette_section_title">Preset Color Palettes &amp; Custom Colors</string>
+    <string name="palette_graphite">Graphite &amp; Silver</string>
+    <string name="palette_soft_blue">Soft Blue</string>
+    <string name="palette_teal">Teal</string>
+    <string name="palette_muted_violet">Muted Violet</string>
+    <string name="palette_emerald">Emerald</string>
+    <string name="palette_warm_neutral">Warm Neutral</string>
+    <string name="custom_color_accent">Primary Accent Color</string>
+    <string name="custom_color_island_bg">Island Background Color</string>
+    <string name="custom_color_notif_bg">Notification Surface Color</string>
+    <string name="custom_color_primary_text">Primary Text Color</string>
+    <string name="custom_color_secondary_text">Secondary Text Color</string>
+    <string name="custom_color_border">Border Color</string>
+
+    <!-- Xiaomi HyperOS & System Compatibility Screen -->
+    <string name="hyperos_screen_title">Xiaomi HyperOS &amp; Background Compatibility</string>
+    <string name="hyperos_screen_subtitle">Tailored guidance for Xiaomi Redmi Note 13 Pro 5G and Android 14+ background persistence</string>
+    <string name="hyperos_detected_banner">Detected Device Environment</string>
+    <string name="hyperos_honest_note">Technical Note: Android 14 and Xiaomi HyperOS enforce strict background process management. Nexa Island uses standard event-driven services, but manual HyperOS configuration is required to prevent OS termination:</string>
+    <string name="hyperos_step_autostart_title">1. Enable Background Autostart</string>
+    <string name="hyperos_step_autostart_desc">Open App Info in HyperOS ⬅ Enable Background Autostart so the service recovers automatically after device reboot.</string>
+    <string name="hyperos_step_battery_title">2. Set Battery Saver to "No Restrictions"</string>
+    <string name="hyperos_step_battery_desc">In App Info ⬅ Battery ⬅ Select "No restrictions" instead of the default HyperOS Battery Saver.</string>
+    <string name="hyperos_step_lockscreen_title">3. Lock Screen &amp; Background Pop-up Permissions</string>
+    <string name="hyperos_step_lockscreen_desc">In App Info ⬅ Other permissions ⬅ Enable "Show on Lock screen" and "Display pop-up windows while running in the background".</string>
+    <string name="hyperos_step_recents_title">4. Lock App in Recents Overview</string>
+    <string name="hyperos_step_recents_desc">Open Recents ⬅ Long-press the Nexa Island card ⬅ Tap the Lock icon so clearing RAM does not stop the overlay.</string>
+    <string name="hyperos_btn_autostart">Open Autostart / App Info</string>
+    <string name="hyperos_btn_battery">Configure Battery Optimization</string>
+    <string name="hyperos_btn_other_perms">Open Additional Permissions</string>
+    <string name="hyperos_btn_notif_listener">Open Notification Access Settings</string>
+    <string name="hyperos_programmatic_tag">Inspectable via API</string>
+    <string name="hyperos_manual_tag">Manual OEM Setting</string>
+
+    <!-- Settings Screen -->
+    <string name="settings_screen_title">Complete Settings</string>
+    <string name="settings_cat_general">General</string>
+    <string name="settings_cat_appearance">Appearance &amp; Language</string>
+    <string name="settings_cat_privacy">Privacy, Lock Screen &amp; App Filters</string>
+    <string name="settings_cat_battery">Battery Efficiency &amp; Performance</string>
+    <string name="settings_cat_advanced">Advanced Diagnostics &amp; About</string>
+
+    <string name="setting_restore_on_boot">Restore Dynamic Island After Reboot</string>
+    <string name="setting_haptic_feedback">Subtle Haptic Feedback on Island Tap</string>
+    <string name="setting_swipe_to_dismiss">Swipe Horizontally to Dismiss Notification</string>
+    <string name="setting_show_on_lockscreen">Show Island on Lock Screen (Where Supported)</string>
+    <string name="setting_hide_sensitive_lockscreen">Hide Sensitive Content When Device is Locked</string>
+    <string name="setting_hide_all_sensitive">Always Mask Sensitive Notification Previews</string>
+
+    <string name="setting_theme_label">Theme Mode</string>
+    <string name="theme_system">Follow System</string>
+    <string name="theme_dark">Dark Mode</string>
+    <string name="theme_light">Light Mode</string>
+
+    <string name="setting_language_label">Application Language (اللغة)</string>
+    <string name="lang_arabic">العربية (Arabic Default)</string>
+    <string name="lang_english">English</string>
+
+    <!-- App Filtering -->
+    <string name="app_filter_title">Application Notification Filtering</string>
+    <string name="app_filter_subtitle">Choose which installed applications can appear in the Dynamic Island</string>
+    <string name="app_filter_manage_btn">Manage App Filters (%1$d blocked)</string>
+    <string name="app_filter_dialog_title">Allowed Applications</string>
+    <string name="app_filter_empty">No additional third-party apps detected; all default apps are allowed.</string>
+    <string name="app_filter_allow_all">Allow All</string>
+    <string name="app_filter_close">Done</string>
+
+    <!-- Battery Efficiency Note -->
+    <string name="battery_efficiency_note">Nexa Island is engineered with a strictly event-driven architecture: zero continuous polling loops, zero network requests, and zero permanent wake locks. Actual battery impact depends on notification frequency and display settings.</string>
+
+    <!-- Diagnostic Log & Reset -->
+    <string name="btn_export_diagnostics">Copy Safe Diagnostic Report (No Notification Content)</string>
+    <string name="diagnostics_copied_toast">Safe diagnostic report copied to clipboard</string>
+    <string name="btn_reset_all">Reset All Preferences to Default</string>
+    <string name="reset_confirm_title">Confirm Reset</string>
+    <string name="reset_confirm_desc">Restore all colors, geometry, and style settings to their default Arabic-first configuration?</string>
+    <string name="action_confirm">Confirm</string>
+    <string name="action_cancel">Cancel</string>
+    <string name="version_info_label">Version 1.0.0 • Package com.nexaisland.dynamicisland</string>
+</resources>

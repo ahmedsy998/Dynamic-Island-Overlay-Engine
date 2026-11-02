@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="108dp"
+    android:height="108dp"
+    android:viewportWidth="108"
+    android:viewportHeight="108">
+    <!-- Outer luminous cyan capsule border -->
+    <path
+        android:fillColor="#FF38BDF8"
+        android:pathData="M34,40h40c7.73,0 14,6.27 14,14s-6.27,14 -14,14H34c-7.73,0 -14,-6.27 -14,-14s6.27,-14 14,-14z" />
+    <!-- Inner dark Dynamic Island capsule -->
+    <path
+        android:fillColor="#FF070A12"
+        android:pathData="M34,42.5h40c6.35,0 11.5,5.15 11.5,11.5S80.35,65.5 74,65.5H34c-6.35,0 -11.5,-5.15 -11.5,-11.5S27.65,42.5 34,42.5z" />
+    <!-- Camera lens indicator on left -->
+    <path
+        android:fillColor="#FF1E293B"
+        android:pathData="M35,54m-5.5,0a5.5,5.5 0,1 1,11 0a5.5,5.5 0,1 1,-11 0" />
+    <path
+        android:fillColor="#FF38BDF8"
+        android:pathData="M35,54m-2.2,0a2.2,2.2 0,1 1,4.4 0a2.2,2.2 0,1 1,-4.4 0" />
+    <!-- Audio/Notification waveform bars on right -->
+    <path
+        android:fillColor="#FF38BDF8"
+        android:pathData="M52,50h2.6v8h-2.6zM57.5,47h2.6v14h-2.6zM63,49h2.6v10h-2.6zM68.5,51.5h2.6v5h-2.6z" />
+</vector>

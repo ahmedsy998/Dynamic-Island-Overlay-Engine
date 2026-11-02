@@ -1,0 +1,229 @@
+<resources>
+    <string name="app_name">Nexa Island</string>
+    <string name="app_subtitle">الجزيرة التفاعلية الذكية لنظام أندرويد</string>
+    <string name="service_notification_listener_label">خدمة إشعارات Nexa Island</string>
+
+    <!-- Navigation Tabs -->
+    <string name="nav_dashboard">الرئيسية</string>
+    <string name="nav_styles">الأنماط</string>
+    <string name="nav_geometry">الأبعاد والموقع</string>
+    <string name="nav_hyperos">HyperOS والنظام</string>
+    <string name="nav_settings">الإعدادات</string>
+
+    <!-- Dashboard & Master Control -->
+    <string name="master_switch_title">تفعيل الجزيرة التفاعلية (Nexa Island)</string>
+    <string name="master_switch_active_desc">الجزيرة نشطة وتعمل في الخلفية لاستقبال الإشعارات الفورية</string>
+    <string name="master_switch_inactive_desc">الجزيرة متوقفة حالياً — فعّل المفتاح لبدء العرض العائم</string>
+    <string name="master_switch_missing_perms_desc">الجزيرة مفعّلة ولكن يلزم منح الصلاحيات الأساسية لتعمل</string>
+
+    <!-- Live Status Diagnostics (6 Distinct Real States) -->
+    <string name="diagnostics_card_title">التشخيص الفعلي لحالة الخدمة</string>
+    <string name="diag_user_pref">تفضيل المستخدم (المفتاح الرئيسي)</string>
+    <string name="diag_permissions_granted">الصلاحيات الأساسية الممنوحة</string>
+    <string name="diag_listener_connected">اتصال مستمع الإشعارات الفعلي</string>
+    <string name="diag_overlay_service">خدمة النافذة العائمة (Overlay)</string>
+    <string name="diag_island_visible">ظهور الجزيرة حالياً على الشاشة</string>
+    <string name="diag_os_restrictions">قيود النظام والبطارية</string>
+
+    <string name="status_enabled">مفعّل</string>
+    <string name="status_disabled">معطّل</string>
+    <string name="status_granted">ممنوحة بالكامل</string>
+    <string name="status_missing">تحتاج إلى إعداد</string>
+    <string name="status_connected">متصل ونشط</string>
+    <string name="status_disconnected">غير متصل</string>
+    <string name="status_running">تعمل بانتظام</string>
+    <string name="status_stopped">متوقفة</string>
+    <string name="status_visible">مرئية الآن</string>
+    <string name="status_hidden">مخفية</string>
+    <string name="status_unrestricted">بدون قيود (مثالي)</string>
+    <string name="status_restricted">مقيّد من النظام</string>
+
+    <!-- Setup Checklist & Permissions -->
+    <string name="checklist_title">قائمة الإعداد والصلاحيات المطلوبة</string>
+    <string name="checklist_subtitle">تُعالَج جميع الإشعارات محلياً على جهازك فقط ولا يتم إرسال أي بيانات للخارج.</string>
+    <string name="perm_overlay_title">إذن العرض فوق التطبيقات الأخرى</string>
+    <string name="perm_overlay_desc">ضروري لرسم كبسولة الجزيرة التفاعلية أعلى الشاشة وفوق التطبيقات.</string>
+    <string name="perm_notification_listener_title">إذن الوصول إلى الإشعارات</string>
+    <string name="perm_notification_listener_desc">ضروري لقراءة الإشعارات الواردة وجلسات الموسيقى والمكالمات فورياً.</string>
+    <string name="perm_post_notifications_title">إذن إشعارات الخدمة (أندرويد 13+)</string>
+    <string name="perm_post_notifications_desc">يسمح بعرض إشعار الخدمة الأمامية لضمان استمرار الجزيرة وإرسال إشعارات الاختبار.</string>
+    <string name="perm_battery_title">إلغاء قيود توفير البطارية</string>
+    <string name="perm_battery_desc">يمنع النظام وواجهة HyperOS من إيقاف الجزيرة أثناء العمل في الخلفية.</string>
+    <string name="action_grant">منح الإذن</string>
+    <string name="action_configured">تم التفعيل</string>
+    <string name="action_open_settings">فتح الإعدادات</string>
+    <string name="action_reconnect">إعادة ربط الخدمة</string>
+
+    <!-- Live Interactive Preview & Test Actions -->
+    <string name="live_preview_title">معاينة حية للجزيرة التفاعلية</string>
+    <string name="live_preview_hint">اضغط على الجزيرة للتوسيع أو الطي • يعكس هذا العرض إعداداتك الفعلية</string>
+    <string name="test_actions_title">اختبار الحالات الفورية</string>
+    <string name="btn_test_notification">إرسال إشعار اختباري حقيقي</string>
+    <string name="btn_test_call">محاكاة مكالمة واردة</string>
+    <string name="btn_test_music">اختبار مشغل الموسيقى</string>
+    <string name="btn_test_charging">حالة الشحن والبطارية</string>
+    <string name="btn_test_timer">مؤقت العد التنازلي</string>
+    <string name="btn_clear_queue">مسح الإشعارات الحالية</string>
+
+    <!-- Island States & Content -->
+    <string name="island_idle_label">Nexa جاهزة</string>
+    <string name="island_charging_label">جارٍ الشحن</string>
+    <string name="island_battery_label">البطارية</string>
+    <string name="island_incoming_call">مكالمة واردة</string>
+    <string name="island_ongoing_call">مكالمة جارية</string>
+    <string name="island_timer_active">مؤقت نشط</string>
+    <string name="island_music_playing">قيد التشغيل الآن</string>
+    <string name="island_sensitive_hidden">محتوى إشعار خاص مخفي لحمايتك</string>
+    <string name="island_action_open">فتح التطبيق</string>
+    <string name="island_action_dismiss">إخفاء</string>
+    <string name="island_action_collapse">طيّ</string>
+    <string name="island_action_next">التالي</string>
+    <string name="island_action_prev">السابق</string>
+    <string name="island_queue_count">%1$d من %2$d</string>
+
+    <!-- Test Notification Payload -->
+    <string name="test_notif_channel_name">إشعارات اختبار Nexa Island</string>
+    <string name="test_notif_title">رسالة اختبارية من Nexa Island</string>
+    <string name="test_notif_body">مرحباً! تعمل الجزيرة التفاعلية بنجاح مع دعم كامل للغة العربية وواجهة One UI 9.</string>
+    <string name="fgs_channel_name">خدمة التشغيل الدائم للجزيرة التفاعلية</string>
+    <string name="fgs_notif_title">Nexa Island نشطة</string>
+    <string name="fgs_notif_body">تعمل الجزيرة التفاعلية في الخلفية لعرض الإشعارات الفورية بأقل استهلاك للبطارية.</string>
+
+    <!-- 7 Notification Styles Gallery -->
+    <string name="styles_screen_title">معرض أنماط الإشعارات</string>
+    <string name="styles_screen_subtitle">اختر النمط البصري للجزيرة التفاعلية وخصّص تفاصيل العرض لكل إشعار وارد</string>
+
+    <string name="style_minimal_black_title">الكبسولة السوداء البسيطة (Minimal Black Pill)</string>
+    <string name="style_minimal_black_desc">كبسولة سوداء أنيقة ومدمجة بحركات ناعمة ومعلومات مختصرة.</string>
+
+    <string name="style_glass_pill_title">الكبسولة الزجاجية الفاخرة (Premium Glass Pill)</string>
+    <string name="style_glass_pill_desc">تصميم شبه شفاف بلمسات ضوئية ناعمة وحدود مصقولة عالية التباين.</string>
+
+    <string name="style_gradient_pill_title">كبسولة التدرج اللوني الناعم (Soft Gradient Pill)</string>
+    <string name="style_gradient_pill_desc">كبسولة عصرية بتدرج لوني هادئ ومريح للعين قابل للتخصيص.</string>
+
+    <string name="style_rounded_card_title">بطاقة الإشعار المستديرة (Rounded Notification Card)</string>
+    <string name="style_rounded_card_desc">بطاقة واضحة تعرض أيقونة التطبيق، العنوان، نص الرسالة، والوقت.</string>
+
+    <string name="style_compact_icon_title">النمط المدمج بالأيقونة فقط (Compact Icon-Only)</string>
+    <string name="style_compact_icon_desc">مؤشر صغير يعرض أيقونة التطبيق فقط ويتوسع عند الضغط عليه.</string>
+
+    <string name="style_expanded_card_title">بطاقة الإشعار الموسّعة التفاعلية (Expanded Card)</string>
+    <string name="style_expanded_card_desc">بطاقة تفاعلية كبيرة تدعم الرسائل الطويلة والتنقل بين الإشعارات المتعددة.</string>
+
+    <string name="style_oneui9_title">نمط سامسونج المستوحى من One UI 9</string>
+    <string name="style_oneui9_desc">تصميم حصري مستوحى من لغة One UI 9 الحديثة: زوايا فائقة الانسيابية، فصل بصري أنيق للأيقونة، وتخطيط مزدوج متكيف للعربية والإنجليزية.</string>
+    <string name="style_oneui9_badge">مميّز • One UI 9</string>
+
+    <!-- Style Shared Customizations -->
+    <string name="style_controls_title">خيارات تخصيص النمط وعناصر الإشعار</string>
+    <string name="toggle_show_app_icon">إظهار أيقونة التطبيق</string>
+    <string name="toggle_show_app_name">إظهار اسم التطبيق</string>
+    <string name="toggle_show_title">إظهار عنوان الإشعار</string>
+    <string name="toggle_show_message">إظهار معاينة نص الرسالة</string>
+    <string name="toggle_show_timestamp">إظهار وقت الإشعار</string>
+    <string name="toggle_group_same_app">تجميع إشعارات التطبيق الواحد</string>
+    <string name="toggle_auto_expand">توسيع الإشعار تلقائياً عند الوصول</string>
+    <string name="toggle_always_show_pill">إبقاء كبسولة الجزيرة مرئية في وضع السكون</string>
+
+    <!-- Geometry & Position Screen -->
+    <string name="geometry_screen_title">الموقع والأبعاد والهندسة التفاعلية</string>
+    <string name="geometry_screen_subtitle">تحكم بدقة في أبعاد الجزيرة وموضعها حول الكاميرا الأمامية مع معاينة مباشرة</string>
+    <string name="slider_compact_width">عرض الكبسولة المدمجة (dp)</string>
+    <string name="slider_compact_height">ارتفاع الكبسولة المدمجة (dp)</string>
+    <string name="slider_expanded_width">عرض البطاقة الموسّعة (dp)</string>
+    <string name="slider_expanded_height">ارتفاع البطاقة الموسّعة (dp)</string>
+    <string name="slider_offset_x">الإزاحة الأفقية X (dp)</string>
+    <string name="slider_offset_y">الإزاحة الرأسية Y من الأعلى (dp)</string>
+    <string name="slider_corner_radius">استدارة الحواف (Corner Radius dp)</string>
+    <string name="slider_outer_margin">الهامش الخارجي (dp)</string>
+    <string name="slider_icon_size">حجم أيقونة الإشعار (dp)</string>
+    <string name="slider_text_scale">مقياس حجم الخط (%)</string>
+    <string name="slider_border_width">سُمك الإطار الخارجي (dp)</string>
+    <string name="slider_shadow_elevation">شدة الظل والعمق (dp)</string>
+    <string name="slider_opacity">مستوى الشفافية والوضوح (%)</string>
+    <string name="slider_anim_duration">سرعة الحركة الانتقالية (مللي ثانية)</string>
+    <string name="slider_display_duration">مدة بقاء الإشعار (ثانية)</string>
+    <string name="btn_reset_geometry">إعادة ضبط الأبعاد والموقع للافتراضي</string>
+
+    <!-- Palette & Color Customization -->
+    <string name="palette_section_title">لوحات الألوان المريحة والتخصيص اللوني</string>
+    <string name="palette_graphite">الجرافيت والفضي (Graphite &amp; Silver)</string>
+    <string name="palette_soft_blue">الأزرق الهادئ (Soft Blue)</string>
+    <string name="palette_teal">الفيروزي المتوازن (Teal)</string>
+    <string name="palette_muted_violet">البنفسجي الهادئ (Muted Violet)</string>
+    <string name="palette_emerald">الزمردي الفاخر (Emerald)</string>
+    <string name="palette_warm_neutral">الرمادي الدافئ (Warm Neutral)</string>
+    <string name="custom_color_accent">اللون المميز الرئيسي (Accent)</string>
+    <string name="custom_color_island_bg">لون خلفية الجزيرة</string>
+    <string name="custom_color_notif_bg">لون خلفية بطاقة الإشعار</string>
+    <string name="custom_color_primary_text">لون النص الأساسي</string>
+    <string name="custom_color_secondary_text">لون النص الثانوي</string>
+    <string name="custom_color_border">لون الإطار الخارجي</string>
+
+    <!-- Xiaomi HyperOS & System Compatibility Screen -->
+    <string name="hyperos_screen_title">توافق Xiaomi HyperOS واستمرارية الخلفية</string>
+    <string name="hyperos_screen_subtitle">دليل مخصص لجهاز Xiaomi Redmi Note 13 Pro 5G وأنظمة أندرويد 14+ لضمان عدم توقف الجزيرة</string>
+    <string name="hyperos_detected_banner">معلومات الجهاز المكتشفة</string>
+    <string name="hyperos_honest_note">ملاحظة تقنية: يفرض نظام أندرويد وواجهة HyperOS قيوداً صارمة على العمليات الخلفية لحماية البطارية. يستخدم التطبيق أفضل الممارسات الرسمية، لكن يجب ضبط الإعدادات اليدوية التالية في HyperOS لمنع النظام من إغلاق الخدمة:</string>
+    <string name="hyperos_step_autostart_title">1. تفعيل التشغيل التلقائي (Autostart)</string>
+    <string name="hyperos_step_autostart_desc">افتح معلومات التطبيق في HyperOS ⬅ فعّل خيار (التشغيل التلقائي في الخلفية / Autostart) ليتمكن التطبيق من العمل تلقائياً بعد إعادة التشغيل.</string>
+    <string name="hyperos_step_battery_title">2. تعيين موفر البطارية إلى (لا توجد قيود)</string>
+    <string name="hyperos_step_battery_desc">انتقل إلى البطارية داخل إعدادات التطبيق ⬅ اختر (لا توجد قيود / No restrictions) بدلاً من موفر بطارية HyperOS الموصى به.</string>
+    <string name="hyperos_step_lockscreen_title">3. العرض على شاشة القفل والنوافذ المنبثقة</string>
+    <string name="hyperos_step_lockscreen_desc">في أذونات HyperOS الأخرى ⬅ فعّل (العرض على شاشة القفل / Show on Lock screen) و(عرض النوافذ المنبثقة أثناء العمل في الخلفية).</string>
+    <string name="hyperos_step_recents_title">4. قفل التطبيق في شاشة التطبيقات الحديثة</string>
+    <string name="hyperos_step_recents_desc">افتح قائمة التطبيقات الحديثة ⬅ اضغط مطولاً على بطاقة Nexa Island ⬅ اضغط على أيقونة القفل لمنع إغلاقه عند مسح الذاكرة.</string>
+    <string name="hyperos_btn_autostart">فتح إعدادات التشغيل التلقائي / التطبيق</string>
+    <string name="hyperos_btn_battery">ضبط استثناء البطارية</string>
+    <string name="hyperos_btn_other_perms">فتح أذونات النظام الإضافية</string>
+    <string name="hyperos_btn_notif_listener">فتح إعدادات الوصول للإشعارات</string>
+    <string name="hyperos_programmatic_tag">يمكن فحصه برمجياً</string>
+    <string name="hyperos_manual_tag">إعداد يدوي خاص بالواجهة</string>
+
+    <!-- Settings Screen -->
+    <string name="settings_screen_title">الإعدادات المتكاملة</string>
+    <string name="settings_cat_general">إعدادات عامة</string>
+    <string name="settings_cat_appearance">المظهر واللغة</string>
+    <string name="settings_cat_privacy">الخصوصية وشاشة القفل وتصفية التطبيقات</string>
+    <string name="settings_cat_battery">كفاءة البطارية والأداء</string>
+    <string name="settings_cat_advanced">التشخيص المتقدم والمعلومات</string>
+
+    <string name="setting_restore_on_boot">استعادة الجزيرة تلقائياً بعد إعادة تشغيل الهاتف</string>
+    <string name="setting_haptic_feedback">اهتزاز لمسي خفيف عند التفاعل مع الجزيرة</string>
+    <string name="setting_swipe_to_dismiss">السحب لإخفاء الإشعار من الجزيرة</string>
+    <string name="setting_show_on_lockscreen">إظهار الجزيرة على شاشة القفل (حيث يدعم النظام)</string>
+    <string name="setting_hide_sensitive_lockscreen">إخفاء محتوى الرسائل الحساسة على شاشة القفل</string>
+    <string name="setting_hide_all_sensitive">إخفاء نص المعاينة دائماً لجميع الإشعارات الخاصة</string>
+
+    <string name="setting_theme_label">وضع المظهر</string>
+    <string name="theme_system">اتباع النظام</string>
+    <string name="theme_dark">الوضع الداكن الفاخر</string>
+    <string name="theme_light">الوضع الفاتح النقي</string>
+
+    <string name="setting_language_label">لغة التطبيق (Language)</string>
+    <string name="lang_arabic">العربية (الافتراضية)</string>
+    <string name="lang_english">English</string>
+
+    <!-- App Filtering -->
+    <string name="app_filter_title">تصفية إشعارات التطبيقات</string>
+    <string name="app_filter_subtitle">حدد التطبيقات المسموح لها بالظهور داخل الجزيرة التفاعلية</string>
+    <string name="app_filter_manage_btn">إدارة قائمة التطبيقات (%1$d محظور)</string>
+    <string name="app_filter_dialog_title">اختيار التطبيقات المسموحة</string>
+    <string name="app_filter_empty">لا توجد تطبيقات خارجية إضافية مرئية حالياً؛ جميع التطبيقات الافتراضية مسموحة.</string>
+    <string name="app_filter_allow_all">السماح للكل</string>
+    <string name="app_filter_close">تم</string>
+
+    <!-- Battery Efficiency Note -->
+    <string name="battery_efficiency_note">تم تصميم Nexa Island بهندسة تعتمد كلياً على الأحداث (Event-Driven) دون أي حلقات فحص مستمرة أو استهلاك للشبكة أو أقفال تنبيه دائمة (WakeLocks). يعتمد الاستهلاك الفعلي على كثافة الإشعارات وإعدادات الشاشة.</string>
+
+    <!-- Diagnostic Log & Reset -->
+    <string name="btn_export_diagnostics">نسخ ومشاركة تقرير التشخيص الآمن (بدون محتوى الإشعارات)</string>
+    <string name="diagnostics_copied_toast">تم نسخ تقرير التشخيص الآمن إلى الحافظة</string>
+    <string name="btn_reset_all">إعادة ضبط جميع الإعدادات إلى الوضع الافتراضي</string>
+    <string name="reset_confirm_title">تأكيد إعادة الضبط</string>
+    <string name="reset_confirm_desc">هل تريد استعادة جميع إعدادات الألوان، الأبعاد، والأنماط إلى القيم الافتراضية باللغة العربية؟</string>
+    <string name="action_confirm">تأكيد</string>
+    <string name="action_cancel">إلغاء</string>
+    <string name="version_info_label">الإصدار 1.0.0 • حزمة com.nexaisland.dynamicisland</string>
+</resources>
