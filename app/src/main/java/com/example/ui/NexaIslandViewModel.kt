@@ -30,12 +30,16 @@ class NexaIslandViewModel(
     private val repository: IslandPreferencesRepository
 ) : ViewModel() {
 
-    val configuration: StateFlow<IslandConfiguration> = repository.configurationFlow
-        .stateIn(
-            scope = viewModelScope,
-            started = SharingStarted.WhileSubscribed(5000),
-            initialValue = IslandConfiguration()
-        )
+    private val _liveConfig = MutableStateFlow(IslandConfiguration())
+    val configuration: StateFlow<IslandConfiguration> = _liveConfig.asStateFlow()
+
+    init {
+        viewModelScope.launch {
+            repository.configurationFlow.collect { storedConfig ->
+                _liveConfig.value = storedConfig
+            }
+        }
+    }
 
     val eventQueue: StateFlow<List<IslandEventItem>> = IslandStateController.eventQueue
     val selectedQueueIndex: StateFlow<Int> = IslandStateController.selectedQueueIndex
@@ -85,6 +89,7 @@ class NexaIslandViewModel(
     }
 
     fun setMasterEnabled(context: Context, enabled: Boolean) {
+        _liveConfig.value = _liveConfig.value.copy(masterEnabled = enabled)
         viewModelScope.launch {
             repository.setMasterEnabled(enabled)
             SystemPermissionHelper.syncOverlayServiceState(context, enabled)
@@ -93,24 +98,37 @@ class NexaIslandViewModel(
     }
 
     fun setLanguageCode(lang: String) {
+        val normalized = if (lang == "en") "en" else "ar"
+        _liveConfig.value = _liveConfig.value.copy(languageCode = normalized)
         viewModelScope.launch {
-            repository.setLanguageCode(lang)
+            repository.setLanguageCode(normalized)
         }
     }
 
     fun setThemeMode(mode: AppThemeMode) {
+        _liveConfig.value = _liveConfig.value.copy(themeMode = mode)
         viewModelScope.launch {
             repository.setThemeMode(mode)
         }
     }
 
     fun setStylePreset(style: NotificationStylePreset) {
+        _liveConfig.value = _liveConfig.value.copy(stylePreset = style)
         viewModelScope.launch {
             repository.setStylePreset(style)
         }
     }
 
     fun applyPalettePreset(palette: ColorPalettePreset) {
+        _liveConfig.value = _liveConfig.value.copy(
+            palettePreset = palette,
+            accentColorHex = palette.accentHex,
+            islandBgColorHex = palette.islandBgHex,
+            notifBgColorHex = palette.notifBgHex,
+            primaryTextColorHex = palette.primaryTextHex,
+            secondaryTextColorHex = palette.secondaryTextHex,
+            borderColorHex = palette.borderHex
+        )
         viewModelScope.launch {
             repository.applyPalettePreset(palette)
         }
@@ -124,6 +142,16 @@ class NexaIslandViewModel(
         secondaryText: Long? = null,
         border: Long? = null
     ) {
+        val current = _liveConfig.value
+        _liveConfig.value = current.copy(
+            palettePreset = ColorPalettePreset.CUSTOM,
+            accentColorHex = accent ?: current.accentColorHex,
+            islandBgColorHex = islandBg ?: current.islandBgColorHex,
+            notifBgColorHex = notifBg ?: current.notifBgColorHex,
+            primaryTextColorHex = primaryText ?: current.primaryTextColorHex,
+            secondaryTextColorHex = secondaryText ?: current.secondaryTextColorHex,
+            borderColorHex = border ?: current.borderColorHex
+        )
         viewModelScope.launch {
             repository.updateCustomColor(
                 accent = accent,
@@ -153,6 +181,24 @@ class NexaIslandViewModel(
         animationDurationMs: Int? = null,
         displayDurationSec: Int? = null
     ) {
+        val current = _liveConfig.value
+        _liveConfig.value = current.copy(
+            compactWidthDp = compactWidthDp?.coerceIn(96, 260) ?: current.compactWidthDp,
+            compactHeightDp = compactHeightDp?.coerceIn(28, 64) ?: current.compactHeightDp,
+            expandedWidthDp = expandedWidthDp?.coerceIn(260, 420) ?: current.expandedWidthDp,
+            expandedHeightDp = expandedHeightDp?.coerceIn(88, 220) ?: current.expandedHeightDp,
+            offsetXDp = offsetXDp?.coerceIn(-120, 120) ?: current.offsetXDp,
+            offsetYDp = offsetYDp?.coerceIn(0, 80) ?: current.offsetYDp,
+            cornerRadiusDp = cornerRadiusDp?.coerceIn(12, 48) ?: current.cornerRadiusDp,
+            outerMarginDp = outerMarginDp?.coerceIn(0, 32) ?: current.outerMarginDp,
+            iconSizeDp = iconSizeDp?.coerceIn(16, 40) ?: current.iconSizeDp,
+            textScalePercent = textScalePercent?.coerceIn(80, 130) ?: current.textScalePercent,
+            borderWidthDp = borderWidthDp?.coerceIn(0f, 4f) ?: current.borderWidthDp,
+            shadowElevationDp = shadowElevationDp?.coerceIn(0, 24) ?: current.shadowElevationDp,
+            opacityPercent = opacityPercent?.coerceIn(70, 100) ?: current.opacityPercent,
+            animationDurationMs = animationDurationMs?.coerceIn(120, 600) ?: current.animationDurationMs,
+            displayDurationSec = displayDurationSec?.coerceIn(3, 15) ?: current.displayDurationSec
+        )
         viewModelScope.launch {
             repository.updateGeometry(
                 compactWidthDp = compactWidthDp,
@@ -190,6 +236,23 @@ class NexaIslandViewModel(
         hideSensitiveOnLockScreen: Boolean? = null,
         alwaysHideSensitiveContent: Boolean? = null
     ) {
+        val current = _liveConfig.value
+        _liveConfig.value = current.copy(
+            showAppIcon = showAppIcon ?: current.showAppIcon,
+            showAppName = showAppName ?: current.showAppName,
+            showTitle = showTitle ?: current.showTitle,
+            showMessagePreview = showMessagePreview ?: current.showMessagePreview,
+            showTimestamp = showTimestamp ?: current.showTimestamp,
+            groupSameApp = groupSameApp ?: current.groupSameApp,
+            autoExpandNotifications = autoExpandNotifications ?: current.autoExpandNotifications,
+            keepIdlePillVisible = keepIdlePillVisible ?: current.keepIdlePillVisible,
+            restoreOnBoot = restoreOnBoot ?: current.restoreOnBoot,
+            hapticFeedback = hapticFeedback ?: current.hapticFeedback,
+            swipeToDismiss = swipeToDismiss ?: current.swipeToDismiss,
+            showOnLockScreen = showOnLockScreen ?: current.showOnLockScreen,
+            hideSensitiveOnLockScreen = hideSensitiveOnLockScreen ?: current.hideSensitiveOnLockScreen,
+            alwaysHideSensitiveContent = alwaysHideSensitiveContent ?: current.alwaysHideSensitiveContent
+        )
         viewModelScope.launch {
             repository.updateVisibilityAndBehavior(
                 showAppIcon = showAppIcon,
@@ -211,14 +274,21 @@ class NexaIslandViewModel(
     }
 
     fun togglePackageBlocked(context: Context, packageName: String, blocked: Boolean) {
+        val current = _liveConfig.value
+        val updatedSet = if (blocked) {
+            current.blockedPackages + packageName
+        } else {
+            current.blockedPackages - packageName
+        }
+        _liveConfig.value = current.copy(blockedPackages = updatedSet)
         viewModelScope.launch {
             repository.togglePackageBlocked(packageName, blocked)
-            val updatedSet = repository.getSnapshot().blockedPackages
             _installedApps.value = SystemPermissionHelper.getLaunchableInstalledApps(context, updatedSet)
         }
     }
 
     fun allowAllPackages(context: Context) {
+        _liveConfig.value = _liveConfig.value.copy(blockedPackages = emptySet())
         viewModelScope.launch {
             repository.clearAllBlockedPackages()
             _installedApps.value = SystemPermissionHelper.getLaunchableInstalledApps(context, emptySet())
@@ -226,12 +296,32 @@ class NexaIslandViewModel(
     }
 
     fun resetGeometryToDefaults() {
+        val defaults = IslandConfiguration()
+        _liveConfig.value = _liveConfig.value.copy(
+            compactWidthDp = defaults.compactWidthDp,
+            compactHeightDp = defaults.compactHeightDp,
+            expandedWidthDp = defaults.expandedWidthDp,
+            expandedHeightDp = defaults.expandedHeightDp,
+            offsetXDp = defaults.offsetXDp,
+            offsetYDp = defaults.offsetYDp,
+            cornerRadiusDp = defaults.cornerRadiusDp,
+            outerMarginDp = defaults.outerMarginDp,
+            iconSizeDp = defaults.iconSizeDp,
+            textScalePercent = defaults.textScalePercent,
+            borderWidthDp = defaults.borderWidthDp,
+            shadowElevationDp = defaults.shadowElevationDp,
+            opacityPercent = defaults.opacityPercent,
+            animationDurationMs = defaults.animationDurationMs,
+            displayDurationSec = defaults.displayDurationSec
+        )
         viewModelScope.launch {
             repository.resetGeometryToDefaults()
         }
     }
 
     fun resetAllToDefaults() {
+        val currentMaster = _liveConfig.value.masterEnabled
+        _liveConfig.value = IslandConfiguration(masterEnabled = currentMaster, languageCode = "ar")
         viewModelScope.launch {
             repository.resetAllToDefaults()
         }

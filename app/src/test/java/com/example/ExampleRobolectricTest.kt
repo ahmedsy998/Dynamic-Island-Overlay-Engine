@@ -4,6 +4,7 @@ import android.content.Context
 import androidx.compose.ui.test.assertIsDisplayed
 import androidx.compose.ui.test.junit4.createAndroidComposeRule
 import androidx.compose.ui.test.onNodeWithTag
+import androidx.compose.ui.test.performClick
 import androidx.test.core.app.ApplicationProvider
 import com.example.model.ServiceDiagnosticsState
 import com.example.util.SystemPermissionHelper
@@ -29,6 +30,20 @@ class ExampleRobolectricTest {
         composeTestRule.waitForIdle()
         composeTestRule.onNodeWithTag("live_preview_card").assertIsDisplayed()
         composeTestRule.onNodeWithTag("master_enable_switch").assertIsDisplayed()
+
+        // Navigate to Geometry customization tab and verify Fixed Live Preview Panel is pinned at top
+        composeTestRule.onNodeWithTag("nav_tab_geometry").performClick()
+        composeTestRule.waitForIdle()
+        composeTestRule.onNodeWithTag("fixed_live_preview_panel").assertIsDisplayed()
+        composeTestRule.onNodeWithTag("live_preview_label").assertIsDisplayed()
+        composeTestRule.onNodeWithTag("geometry_scroll_section").assertIsDisplayed()
+
+        // Navigate to Styles customization tab and verify Fixed Live Preview Panel is pinned at top
+        composeTestRule.onNodeWithTag("nav_tab_styles").performClick()
+        composeTestRule.waitForIdle()
+        composeTestRule.onNodeWithTag("fixed_live_preview_panel").assertIsDisplayed()
+        composeTestRule.onNodeWithTag("live_preview_label").assertIsDisplayed()
+        composeTestRule.onNodeWithTag("styles_scroll_section").assertIsDisplayed()
     }
 
     @Test

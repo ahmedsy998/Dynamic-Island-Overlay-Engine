@@ -223,12 +223,13 @@ fun NexaIslandRootApp(viewModel: NexaIslandViewModel) {
                         isExpanded = isExpanded,
                         onSelectStyle = { viewModel.setStylePreset(it) },
                         onSelectPalette = { viewModel.applyPalettePreset(it) },
-                        onUpdateCustomColor = { accent, islandBg, notifBg, primaryText ->
+                        onUpdateCustomColor = { accent, islandBg, notifBg, primaryText, border ->
                             viewModel.updateCustomColor(
                                 accent = accent,
                                 islandBg = islandBg,
                                 notifBg = notifBg,
-                                primaryText = primaryText
+                                primaryText = primaryText,
+                                border = border
                             )
                         },
                         onUpdateVisibility = { icon, appName, title, msg, time, group, expand, idlePill ->

@@ -132,31 +132,30 @@ fun DynamicIslandCapsule(
     val animDuration = config.animationDurationMs.coerceIn(120, 600)
     val animatedWidth by animateDpAsState(
         targetValue = targetWidth,
-        animationSpec = spring(
-            dampingRatio = Spring.DampingRatioLowBouncy,
-            stiffness = Spring.StiffnessMediumLow
+        animationSpec = tween(
+            durationMillis = animDuration,
+            easing = FastOutSlowInEasing
         ),
         label = "island_width"
     )
     val animatedHeight by animateDpAsState(
         targetValue = targetHeight,
-        animationSpec = spring(
-            dampingRatio = Spring.DampingRatioNoBouncy,
-            stiffness = Spring.StiffnessMedium
+        animationSpec = tween(
+            durationMillis = animDuration,
+            easing = FastOutSlowInEasing
         ),
         label = "island_height"
     )
 
     val cornerRadius = when (style) {
-        NotificationStylePreset.SAMSUNG_ONE_UI_9 -> if (effectiveExpanded) 28.dp else 32.dp
-        NotificationStylePreset.ROUNDED_NOTIFICATION_CARD -> 22.dp
-        else -> config.cornerRadiusDp.dp
+        NotificationStylePreset.ROUNDED_NOTIFICATION_CARD -> (config.cornerRadiusDp - 4).coerceIn(10, 44).dp
+        else -> config.cornerRadiusDp.coerceIn(12, 48).dp
     }
 
     val alphaFactor = (config.opacityPercent / 100f).coerceIn(0.7f, 1f)
     val accentColor = Color(config.accentColorHex)
     val baseBgColor = when (style) {
-        NotificationStylePreset.MINIMAL_BLACK_PILL -> Color(0xFF05070B).copy(alpha = alphaFactor)
+        NotificationStylePreset.MINIMAL_BLACK_PILL -> Color(config.islandBgColorHex).copy(alpha = alphaFactor)
         NotificationStylePreset.SAMSUNG_ONE_UI_9 -> Color(config.notifBgColorHex).copy(alpha = alphaFactor)
         else -> if (effectiveExpanded) {
             Color(config.notifBgColorHex).copy(alpha = alphaFactor)
@@ -173,10 +172,11 @@ fun DynamicIslandCapsule(
 
     val primaryTextColor = Color(config.primaryTextColorHex)
     val secondaryTextColor = Color(config.secondaryTextColorHex)
-    val borderColor = when (style) {
-        NotificationStylePreset.MINIMAL_BLACK_PILL -> Color(0xFF1E293B)
-        NotificationStylePreset.PREMIUM_GLASS_PILL -> accentColor.copy(alpha = 0.55f)
-        NotificationStylePreset.SAMSUNG_ONE_UI_9 -> accentColor.copy(alpha = 0.35f)
+    val borderColor = when {
+        config.palettePreset == com.example.model.ColorPalettePreset.CUSTOM -> Color(config.borderColorHex)
+        style == NotificationStylePreset.MINIMAL_BLACK_PILL -> Color(config.borderColorHex)
+        style == NotificationStylePreset.PREMIUM_GLASS_PILL -> accentColor.copy(alpha = 0.55f)
+        style == NotificationStylePreset.SAMSUNG_ONE_UI_9 -> accentColor.copy(alpha = 0.45f)
         else -> Color(config.borderColorHex)
     }
 
@@ -192,13 +192,20 @@ fun DynamicIslandCapsule(
             (activeEvent.isSensitive && config.hideSensitiveOnLockScreen)
         )
 
+    val previewVerticalOffsetDp = (config.offsetYDp * 0.4f).coerceIn(0f, 32f).dp
+    val glowAlpha = (config.shadowElevationDp / 24f).coerceIn(0.15f, 0.7f)
+
     Box(
         modifier = modifier
             .padding(horizontal = config.outerMarginDp.dp)
             .offset {
                 IntOffset(
                     x = (config.offsetXDp.dp.toPx() + dragOffsetX).roundToInt(),
-                    y = if (isPreviewMode) 0 else config.offsetYDp.dp.roundToPx()
+                    y = if (isPreviewMode) {
+                        previewVerticalOffsetDp.roundToPx()
+                    } else {
+                        config.offsetYDp.dp.roundToPx()
+                    }
                 )
             }
             .width(animatedWidth)
@@ -206,8 +213,8 @@ fun DynamicIslandCapsule(
             .shadow(
                 elevation = config.shadowElevationDp.dp,
                 shape = shape,
-                ambientColor = accentColor.copy(alpha = 0.25f),
-                spotColor = accentColor.copy(alpha = 0.35f)
+                ambientColor = accentColor.copy(alpha = glowAlpha * 0.65f),
+                spotColor = accentColor.copy(alpha = glowAlpha)
             )
             .clip(shape)
             .background(

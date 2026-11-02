@@ -1,9 +1,6 @@
 package com.example.ui.screens
 
-import androidx.compose.foundation.background
-import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -28,8 +25,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
@@ -39,7 +34,8 @@ import com.example.data.IslandStateController
 import com.example.model.IslandConfiguration
 import com.example.model.IslandEventItem
 import com.example.model.IslandEventType
-import com.example.ui.components.DynamicIslandCapsule
+import com.example.ui.components.FixedLivePreviewPanel
+import java.util.Locale
 import kotlin.math.roundToInt
 
 @Composable
@@ -81,207 +77,204 @@ fun GeometryPositionScreen(
         )
     }
 
+    // Fixed parent layout: non-scrolling top Live Preview panel + independently scrollable settings section below
     Column(
-        modifier = modifier
-            .fillMaxSize()
-            .verticalScroll(scrollState)
-            .padding(horizontal = 16.dp, vertical = 12.dp),
-        verticalArrangement = Arrangement.spacedBy(16.dp)
+        modifier = modifier.fillMaxSize()
     ) {
-        Text(
-            text = stringResource(R.string.geometry_screen_title),
-            style = MaterialTheme.typography.headlineMedium,
-            fontWeight = FontWeight.Bold
-        )
-        Text(
-            text = stringResource(R.string.geometry_screen_subtitle),
-            style = MaterialTheme.typography.bodyMedium,
-            color = MaterialTheme.colorScheme.onSurfaceVariant
+        FixedLivePreviewPanel(
+            config = config,
+            previewEvent = previewEvent,
+            isExpanded = isExpanded,
+            onToggleExpand = { IslandStateController.toggleExpanded() }
         )
 
-        // Interactive Geometry Preview Box
-        Box(
+        Column(
             modifier = Modifier
+                .weight(1f)
                 .fillMaxWidth()
-                .clip(RoundedCornerShape(24.dp))
-                .background(Color(0xFF0A101E))
-                .border(1.dp, Color(0xFF1E293B), RoundedCornerShape(24.dp))
-                .padding(vertical = 24.dp, horizontal = 8.dp),
-            contentAlignment = Alignment.TopCenter
+                .verticalScroll(scrollState)
+                .padding(horizontal = 16.dp, vertical = 12.dp)
+                .testTag("geometry_scroll_section"),
+            verticalArrangement = Arrangement.spacedBy(16.dp)
         ) {
-            DynamicIslandCapsule(
-                config = config,
-                activeEvent = previewEvent,
-                queueSize = 1,
-                currentQueueIndex = 0,
-                isExpanded = isExpanded,
-                isDeviceLocked = false,
-                onToggleExpand = { IslandStateController.toggleExpanded() },
-                onOpenNotificationIntent = {},
-                onDismissEvent = {},
-                onNextEvent = {},
-                onPrevEvent = {},
-                isPreviewMode = false
-            )
-        }
-
-        Card(
-            modifier = Modifier.fillMaxWidth(),
-            shape = RoundedCornerShape(22.dp),
-            colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surface)
-        ) {
-            Column(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(16.dp),
-                verticalArrangement = Arrangement.spacedBy(14.dp)
-            ) {
-                GeometryIntSlider(
-                    label = stringResource(R.string.slider_compact_width),
-                    value = config.compactWidthDp,
-                    range = 96f..260f,
-                    unit = "dp",
-                    onValueChange = {
-                        onUpdateGeometry(it, null, null, null, null, null, null, null, null, null, null, null, null, null, null)
-                    }
-                )
-                GeometryIntSlider(
-                    label = stringResource(R.string.slider_compact_height),
-                    value = config.compactHeightDp,
-                    range = 28f..64f,
-                    unit = "dp",
-                    onValueChange = {
-                        onUpdateGeometry(null, it, null, null, null, null, null, null, null, null, null, null, null, null, null)
-                    }
-                )
-                GeometryIntSlider(
-                    label = stringResource(R.string.slider_expanded_width),
-                    value = config.expandedWidthDp,
-                    range = 260f..420f,
-                    unit = "dp",
-                    onValueChange = {
-                        onUpdateGeometry(null, null, it, null, null, null, null, null, null, null, null, null, null, null, null)
-                    }
-                )
-                GeometryIntSlider(
-                    label = stringResource(R.string.slider_expanded_height),
-                    value = config.expandedHeightDp,
-                    range = 88f..220f,
-                    unit = "dp",
-                    onValueChange = {
-                        onUpdateGeometry(null, null, null, it, null, null, null, null, null, null, null, null, null, null, null)
-                    }
-                )
-                GeometryIntSlider(
-                    label = stringResource(R.string.slider_offset_x),
-                    value = config.offsetXDp,
-                    range = -120f..120f,
-                    unit = "dp",
-                    onValueChange = {
-                        onUpdateGeometry(null, null, null, null, it, null, null, null, null, null, null, null, null, null, null)
-                    }
-                )
-                GeometryIntSlider(
-                    label = stringResource(R.string.slider_offset_y),
-                    value = config.offsetYDp,
-                    range = 0f..80f,
-                    unit = "dp",
-                    onValueChange = {
-                        onUpdateGeometry(null, null, null, null, null, it, null, null, null, null, null, null, null, null, null)
-                    }
-                )
-                GeometryIntSlider(
-                    label = stringResource(R.string.slider_corner_radius),
-                    value = config.cornerRadiusDp,
-                    range = 12f..48f,
-                    unit = "dp",
-                    onValueChange = {
-                        onUpdateGeometry(null, null, null, null, null, null, it, null, null, null, null, null, null, null, null)
-                    }
-                )
-                GeometryIntSlider(
-                    label = stringResource(R.string.slider_outer_margin),
-                    value = config.outerMarginDp,
-                    range = 0f..32f,
-                    unit = "dp",
-                    onValueChange = {
-                        onUpdateGeometry(null, null, null, null, null, null, null, it, null, null, null, null, null, null, null)
-                    }
-                )
-                GeometryIntSlider(
-                    label = stringResource(R.string.slider_icon_size),
-                    value = config.iconSizeDp,
-                    range = 16f..40f,
-                    unit = "dp",
-                    onValueChange = {
-                        onUpdateGeometry(null, null, null, null, null, null, null, null, it, null, null, null, null, null, null)
-                    }
-                )
-                GeometryIntSlider(
-                    label = stringResource(R.string.slider_text_scale),
-                    value = config.textScalePercent,
-                    range = 80f..130f,
-                    unit = "%",
-                    onValueChange = {
-                        onUpdateGeometry(null, null, null, null, null, null, null, null, null, it, null, null, null, null, null)
-                    }
-                )
-                GeometryIntSlider(
-                    label = stringResource(R.string.slider_shadow_elevation),
-                    value = config.shadowElevationDp,
-                    range = 0f..24f,
-                    unit = "dp",
-                    onValueChange = {
-                        onUpdateGeometry(null, null, null, null, null, null, null, null, null, null, null, it, null, null, null)
-                    }
-                )
-                GeometryIntSlider(
-                    label = stringResource(R.string.slider_opacity),
-                    value = config.opacityPercent,
-                    range = 70f..100f,
-                    unit = "%",
-                    onValueChange = {
-                        onUpdateGeometry(null, null, null, null, null, null, null, null, null, null, null, null, it, null, null)
-                    }
-                )
-                GeometryIntSlider(
-                    label = stringResource(R.string.slider_anim_duration),
-                    value = config.animationDurationMs,
-                    range = 120f..600f,
-                    unit = "ms",
-                    onValueChange = {
-                        onUpdateGeometry(null, null, null, null, null, null, null, null, null, null, null, null, null, it, null)
-                    }
-                )
-                GeometryIntSlider(
-                    label = stringResource(R.string.slider_display_duration),
-                    value = config.displayDurationSec,
-                    range = 3f..15f,
-                    unit = "s",
-                    onValueChange = {
-                        onUpdateGeometry(null, null, null, null, null, null, null, null, null, null, null, null, null, null, it)
-                    }
-                )
-            }
-        }
-
-        OutlinedButton(
-            onClick = onResetGeometry,
-            modifier = Modifier
-                .fillMaxWidth()
-                .height(50.dp)
-                .testTag("btn_reset_geometry"),
-            shape = RoundedCornerShape(14.dp)
-        ) {
-            Icon(imageVector = Icons.Default.RestartAlt, contentDescription = null)
-            Spacer(modifier = Modifier.width(8.dp))
             Text(
-                text = stringResource(R.string.btn_reset_geometry),
+                text = stringResource(R.string.geometry_screen_title),
+                style = MaterialTheme.typography.headlineMedium,
                 fontWeight = FontWeight.Bold
             )
-        }
+            Text(
+                text = stringResource(R.string.geometry_screen_subtitle),
+                style = MaterialTheme.typography.bodyMedium,
+                color = MaterialTheme.colorScheme.onSurfaceVariant
+            )
 
-        Spacer(modifier = Modifier.height(16.dp))
+            Card(
+                modifier = Modifier.fillMaxWidth(),
+                shape = RoundedCornerShape(22.dp),
+                colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surface)
+            ) {
+                Column(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(16.dp),
+                    verticalArrangement = Arrangement.spacedBy(14.dp)
+                ) {
+                    GeometryIntSlider(
+                        label = stringResource(R.string.slider_compact_width),
+                        value = config.compactWidthDp,
+                        range = 96f..260f,
+                        unit = "dp",
+                        onValueChange = {
+                            onUpdateGeometry(it, null, null, null, null, null, null, null, null, null, null, null, null, null, null)
+                        }
+                    )
+                    GeometryIntSlider(
+                        label = stringResource(R.string.slider_compact_height),
+                        value = config.compactHeightDp,
+                        range = 28f..64f,
+                        unit = "dp",
+                        onValueChange = {
+                            onUpdateGeometry(null, it, null, null, null, null, null, null, null, null, null, null, null, null, null)
+                        }
+                    )
+                    GeometryIntSlider(
+                        label = stringResource(R.string.slider_expanded_width),
+                        value = config.expandedWidthDp,
+                        range = 260f..420f,
+                        unit = "dp",
+                        onValueChange = {
+                            onUpdateGeometry(null, null, it, null, null, null, null, null, null, null, null, null, null, null, null)
+                        }
+                    )
+                    GeometryIntSlider(
+                        label = stringResource(R.string.slider_expanded_height),
+                        value = config.expandedHeightDp,
+                        range = 88f..220f,
+                        unit = "dp",
+                        onValueChange = {
+                            onUpdateGeometry(null, null, null, it, null, null, null, null, null, null, null, null, null, null, null)
+                        }
+                    )
+                    GeometryIntSlider(
+                        label = stringResource(R.string.slider_offset_x),
+                        value = config.offsetXDp,
+                        range = -120f..120f,
+                        unit = "dp",
+                        onValueChange = {
+                            onUpdateGeometry(null, null, null, null, it, null, null, null, null, null, null, null, null, null, null)
+                        }
+                    )
+                    GeometryIntSlider(
+                        label = stringResource(R.string.slider_offset_y),
+                        value = config.offsetYDp,
+                        range = 0f..80f,
+                        unit = "dp",
+                        onValueChange = {
+                            onUpdateGeometry(null, null, null, null, null, it, null, null, null, null, null, null, null, null, null)
+                        }
+                    )
+                    GeometryIntSlider(
+                        label = stringResource(R.string.slider_corner_radius),
+                        value = config.cornerRadiusDp,
+                        range = 12f..48f,
+                        unit = "dp",
+                        onValueChange = {
+                            onUpdateGeometry(null, null, null, null, null, null, it, null, null, null, null, null, null, null, null)
+                        }
+                    )
+                    GeometryIntSlider(
+                        label = stringResource(R.string.slider_outer_margin),
+                        value = config.outerMarginDp,
+                        range = 0f..32f,
+                        unit = "dp",
+                        onValueChange = {
+                            onUpdateGeometry(null, null, null, null, null, null, null, it, null, null, null, null, null, null, null)
+                        }
+                    )
+                    GeometryIntSlider(
+                        label = stringResource(R.string.slider_icon_size),
+                        value = config.iconSizeDp,
+                        range = 16f..40f,
+                        unit = "dp",
+                        onValueChange = {
+                            onUpdateGeometry(null, null, null, null, null, null, null, null, it, null, null, null, null, null, null)
+                        }
+                    )
+                    GeometryIntSlider(
+                        label = stringResource(R.string.slider_text_scale),
+                        value = config.textScalePercent,
+                        range = 80f..130f,
+                        unit = "%",
+                        onValueChange = {
+                            onUpdateGeometry(null, null, null, null, null, null, null, null, null, it, null, null, null, null, null)
+                        }
+                    )
+                    GeometryFloatSlider(
+                        label = stringResource(R.string.slider_border_width),
+                        value = config.borderWidthDp,
+                        range = 0f..4f,
+                        unit = "dp",
+                        onValueChange = {
+                            onUpdateGeometry(null, null, null, null, null, null, null, null, null, null, it, null, null, null, null)
+                        }
+                    )
+                    GeometryIntSlider(
+                        label = stringResource(R.string.slider_shadow_elevation),
+                        value = config.shadowElevationDp,
+                        range = 0f..24f,
+                        unit = "dp",
+                        onValueChange = {
+                            onUpdateGeometry(null, null, null, null, null, null, null, null, null, null, null, it, null, null, null)
+                        }
+                    )
+                    GeometryIntSlider(
+                        label = stringResource(R.string.slider_opacity),
+                        value = config.opacityPercent,
+                        range = 70f..100f,
+                        unit = "%",
+                        onValueChange = {
+                            onUpdateGeometry(null, null, null, null, null, null, null, null, null, null, null, null, it, null, null)
+                        }
+                    )
+                    GeometryIntSlider(
+                        label = stringResource(R.string.slider_anim_duration),
+                        value = config.animationDurationMs,
+                        range = 120f..600f,
+                        unit = "ms",
+                        onValueChange = {
+                            onUpdateGeometry(null, null, null, null, null, null, null, null, null, null, null, null, null, it, null)
+                        }
+                    )
+                    GeometryIntSlider(
+                        label = stringResource(R.string.slider_display_duration),
+                        value = config.displayDurationSec,
+                        range = 3f..15f,
+                        unit = "s",
+                        onValueChange = {
+                            onUpdateGeometry(null, null, null, null, null, null, null, null, null, null, null, null, null, null, it)
+                        }
+                    )
+                }
+            }
+
+            OutlinedButton(
+                onClick = onResetGeometry,
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(50.dp)
+                    .testTag("btn_reset_geometry"),
+                shape = RoundedCornerShape(14.dp)
+            ) {
+                Icon(imageVector = Icons.Default.RestartAlt, contentDescription = null)
+                Spacer(modifier = Modifier.width(8.dp))
+                Text(
+                    text = stringResource(R.string.btn_reset_geometry),
+                    fontWeight = FontWeight.Bold
+                )
+            }
+
+            Spacer(modifier = Modifier.height(16.dp))
+        }
     }
 }
 
@@ -314,6 +307,43 @@ private fun GeometryIntSlider(
         Slider(
             value = value.toFloat(),
             onValueChange = { onValueChange(it.roundToInt()) },
+            valueRange = range
+        )
+    }
+}
+
+@Composable
+private fun GeometryFloatSlider(
+    label: String,
+    value: Float,
+    range: ClosedFloatingPointRange<Float>,
+    unit: String,
+    onValueChange: (Float) -> Unit
+) {
+    Column(modifier = Modifier.fillMaxWidth()) {
+        Row(
+            modifier = Modifier.fillMaxWidth(),
+            horizontalArrangement = Arrangement.SpaceBetween,
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            Text(
+                text = label,
+                style = MaterialTheme.typography.bodyMedium,
+                fontWeight = FontWeight.SemiBold
+            )
+            Text(
+                text = String.format(Locale.US, "%.1f %s", value, unit),
+                style = MaterialTheme.typography.labelLarge,
+                color = MaterialTheme.colorScheme.primary,
+                fontWeight = FontWeight.Bold
+            )
+        }
+        Slider(
+            value = value,
+            onValueChange = { raw ->
+                val roundedTenth = (raw * 10f).roundToInt() / 10f
+                onValueChange(roundedTenth)
+            },
             valueRange = range
         )
     }

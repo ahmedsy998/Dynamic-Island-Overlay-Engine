@@ -48,7 +48,7 @@ import com.example.model.IslandConfiguration
 import com.example.model.IslandEventItem
 import com.example.model.IslandEventType
 import com.example.model.NotificationStylePreset
-import com.example.ui.components.DynamicIslandCapsule
+import com.example.ui.components.FixedLivePreviewPanel
 
 @Composable
 fun StylesGalleryScreen(
@@ -57,7 +57,13 @@ fun StylesGalleryScreen(
     isExpanded: Boolean,
     onSelectStyle: (NotificationStylePreset) -> Unit,
     onSelectPalette: (ColorPalettePreset) -> Unit,
-    onUpdateCustomColor: (accent: Long?, islandBg: Long?, notifBg: Long?, primaryText: Long?) -> Unit,
+    onUpdateCustomColor: (
+        accent: Long?,
+        islandBg: Long?,
+        notifBg: Long?,
+        primaryText: Long?,
+        border: Long?
+    ) -> Unit,
     onUpdateVisibility: (
         showIcon: Boolean?,
         showAppName: Boolean?,
@@ -85,381 +91,449 @@ fun StylesGalleryScreen(
         )
     }
 
+    // Fixed parent layout: non-scrolling top Live Preview panel + independently scrollable settings section below
     Column(
-        modifier = modifier
-            .fillMaxSize()
-            .verticalScroll(scrollState)
-            .padding(horizontal = 16.dp, vertical = 12.dp),
-        verticalArrangement = Arrangement.spacedBy(16.dp)
+        modifier = modifier.fillMaxSize()
     ) {
-        Text(
-            text = stringResource(R.string.styles_screen_title),
-            style = MaterialTheme.typography.headlineMedium,
-            fontWeight = FontWeight.Bold
-        )
-        Text(
-            text = stringResource(R.string.styles_screen_subtitle),
-            style = MaterialTheme.typography.bodyMedium,
-            color = MaterialTheme.colorScheme.onSurfaceVariant
+        FixedLivePreviewPanel(
+            config = config,
+            previewEvent = previewEvent,
+            isExpanded = isExpanded,
+            onToggleExpand = { IslandStateController.toggleExpanded() }
         )
 
-        // Live Preview of Selected Style
-        Box(
+        Column(
             modifier = Modifier
+                .weight(1f)
                 .fillMaxWidth()
-                .clip(RoundedCornerShape(24.dp))
-                .background(Color(0xFF0B1120))
-                .border(1.dp, Color(0xFF1E293B), RoundedCornerShape(24.dp))
-                .padding(vertical = 22.dp, horizontal = 8.dp),
-            contentAlignment = Alignment.Center
+                .verticalScroll(scrollState)
+                .padding(horizontal = 16.dp, vertical = 12.dp)
+                .testTag("styles_scroll_section"),
+            verticalArrangement = Arrangement.spacedBy(16.dp)
         ) {
-            DynamicIslandCapsule(
-                config = config,
-                activeEvent = previewEvent,
-                queueSize = 2,
-                currentQueueIndex = 0,
-                isExpanded = isExpanded,
-                isDeviceLocked = false,
-                onToggleExpand = { IslandStateController.toggleExpanded() },
-                onOpenNotificationIntent = {},
-                onDismissEvent = {},
-                onNextEvent = {},
-                onPrevEvent = {},
-                isPreviewMode = true
+            Text(
+                text = stringResource(R.string.styles_screen_title),
+                style = MaterialTheme.typography.headlineMedium,
+                fontWeight = FontWeight.Bold
             )
-        }
-
-        // 7 Notification Style Cards (with Samsung One UI 9-Inspired Style highlighted)
-        val styleEntries = listOf(
-            Triple(
-                NotificationStylePreset.SAMSUNG_ONE_UI_9,
-                R.string.style_oneui9_title,
-                R.string.style_oneui9_desc
-            ),
-            Triple(
-                NotificationStylePreset.MINIMAL_BLACK_PILL,
-                R.string.style_minimal_black_title,
-                R.string.style_minimal_black_desc
-            ),
-            Triple(
-                NotificationStylePreset.PREMIUM_GLASS_PILL,
-                R.string.style_glass_pill_title,
-                R.string.style_glass_pill_desc
-            ),
-            Triple(
-                NotificationStylePreset.SOFT_GRADIENT_PILL,
-                R.string.style_gradient_pill_title,
-                R.string.style_gradient_pill_desc
-            ),
-            Triple(
-                NotificationStylePreset.ROUNDED_NOTIFICATION_CARD,
-                R.string.style_rounded_card_title,
-                R.string.style_rounded_card_desc
-            ),
-            Triple(
-                NotificationStylePreset.COMPACT_ICON_ONLY,
-                R.string.style_compact_icon_title,
-                R.string.style_compact_icon_desc
-            ),
-            Triple(
-                NotificationStylePreset.EXPANDED_NOTIFICATION_CARD,
-                R.string.style_expanded_card_title,
-                R.string.style_expanded_card_desc
+            Text(
+                text = stringResource(R.string.styles_screen_subtitle),
+                style = MaterialTheme.typography.bodyMedium,
+                color = MaterialTheme.colorScheme.onSurfaceVariant
             )
-        )
 
-        styleEntries.forEach { (preset, titleRes, descRes) ->
-            val selected = config.stylePreset == preset
-            val isOneUi9 = preset == NotificationStylePreset.SAMSUNG_ONE_UI_9
-            val borderColor = when {
-                selected -> MaterialTheme.colorScheme.primary
-                isOneUi9 -> Color(0xFF38BDF8).copy(alpha = 0.45f)
-                else -> MaterialTheme.colorScheme.outline.copy(alpha = 0.25f)
+            // 7 Notification Style Cards (with Samsung One UI 9-Inspired Style highlighted)
+            val styleEntries = listOf(
+                Triple(
+                    NotificationStylePreset.SAMSUNG_ONE_UI_9,
+                    R.string.style_oneui9_title,
+                    R.string.style_oneui9_desc
+                ),
+                Triple(
+                    NotificationStylePreset.MINIMAL_BLACK_PILL,
+                    R.string.style_minimal_black_title,
+                    R.string.style_minimal_black_desc
+                ),
+                Triple(
+                    NotificationStylePreset.PREMIUM_GLASS_PILL,
+                    R.string.style_glass_pill_title,
+                    R.string.style_glass_pill_desc
+                ),
+                Triple(
+                    NotificationStylePreset.SOFT_GRADIENT_PILL,
+                    R.string.style_gradient_pill_title,
+                    R.string.style_gradient_pill_desc
+                ),
+                Triple(
+                    NotificationStylePreset.ROUNDED_NOTIFICATION_CARD,
+                    R.string.style_rounded_card_title,
+                    R.string.style_rounded_card_desc
+                ),
+                Triple(
+                    NotificationStylePreset.COMPACT_ICON_ONLY,
+                    R.string.style_compact_icon_title,
+                    R.string.style_compact_icon_desc
+                ),
+                Triple(
+                    NotificationStylePreset.EXPANDED_NOTIFICATION_CARD,
+                    R.string.style_expanded_card_title,
+                    R.string.style_expanded_card_desc
+                )
+            )
+
+            styleEntries.forEach { (preset, titleRes, descRes) ->
+                val selected = config.stylePreset == preset
+                val isOneUi9 = preset == NotificationStylePreset.SAMSUNG_ONE_UI_9
+                val borderColor = when {
+                    selected -> MaterialTheme.colorScheme.primary
+                    isOneUi9 -> Color(0xFF38BDF8).copy(alpha = 0.45f)
+                    else -> MaterialTheme.colorScheme.outline.copy(alpha = 0.25f)
+                }
+
+                Card(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .clip(RoundedCornerShape(20.dp))
+                        .border(if (selected) 2.dp else 1.dp, borderColor, RoundedCornerShape(20.dp))
+                        .clickable { onSelectStyle(preset) }
+                        .testTag("style_card_${preset.id}"),
+                    shape = RoundedCornerShape(20.dp),
+                    colors = CardDefaults.cardColors(
+                        containerColor = if (selected) {
+                            MaterialTheme.colorScheme.primaryContainer.copy(alpha = 0.28f)
+                        } else {
+                            MaterialTheme.colorScheme.surface
+                        }
+                    )
+                ) {
+                    Column(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(16.dp),
+                        verticalArrangement = Arrangement.spacedBy(8.dp)
+                    ) {
+                        Row(
+                            modifier = Modifier.fillMaxWidth(),
+                            verticalAlignment = Alignment.CenterVertically,
+                            horizontalArrangement = Arrangement.SpaceBetween
+                        ) {
+                            Row(
+                                verticalAlignment = Alignment.CenterVertically,
+                                modifier = Modifier.weight(1f)
+                            ) {
+                                Icon(
+                                    imageVector = if (selected) {
+                                        Icons.Default.CheckCircle
+                                    } else {
+                                        Icons.Default.RadioButtonUnchecked
+                                    },
+                                    contentDescription = null,
+                                    tint = if (selected) {
+                                        MaterialTheme.colorScheme.primary
+                                    } else {
+                                        MaterialTheme.colorScheme.onSurfaceVariant
+                                    },
+                                    modifier = Modifier.size(22.dp)
+                                )
+                                Spacer(modifier = Modifier.width(10.dp))
+                                Text(
+                                    text = stringResource(titleRes),
+                                    style = MaterialTheme.typography.titleMedium,
+                                    fontWeight = FontWeight.Bold
+                                )
+                            }
+
+                            if (isOneUi9) {
+                                Box(
+                                    modifier = Modifier
+                                        .clip(RoundedCornerShape(50))
+                                        .background(Color(0xFF38BDF8).copy(alpha = 0.18f))
+                                        .padding(horizontal = 10.dp, vertical = 4.dp)
+                                ) {
+                                    Row(verticalAlignment = Alignment.CenterVertically) {
+                                        Icon(
+                                            imageVector = Icons.Default.AutoAwesome,
+                                            contentDescription = null,
+                                            tint = Color(0xFF38BDF8),
+                                            modifier = Modifier.size(13.dp)
+                                        )
+                                        Spacer(modifier = Modifier.width(4.dp))
+                                        Text(
+                                            text = stringResource(R.string.style_oneui9_badge),
+                                            color = Color(0xFF38BDF8),
+                                            fontSize = 11.sp,
+                                            fontWeight = FontWeight.Bold
+                                        )
+                                    }
+                                }
+                            }
+                        }
+
+                        Text(
+                            text = stringResource(descRes),
+                            style = MaterialTheme.typography.bodyMedium,
+                            color = MaterialTheme.colorScheme.onSurfaceVariant
+                        )
+                    }
+                }
             }
 
+            // Color Palette Presets & Custom Swatches
             Card(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .clip(RoundedCornerShape(20.dp))
-                    .border(if (selected) 2.dp else 1.dp, borderColor, RoundedCornerShape(20.dp))
-                    .clickable { onSelectStyle(preset) }
-                    .testTag("style_card_${preset.id}"),
-                shape = RoundedCornerShape(20.dp),
-                colors = CardDefaults.cardColors(
-                    containerColor = if (selected) {
-                        MaterialTheme.colorScheme.primaryContainer.copy(alpha = 0.28f)
-                    } else {
-                        MaterialTheme.colorScheme.surface
-                    }
-                )
+                modifier = Modifier.fillMaxWidth(),
+                shape = RoundedCornerShape(22.dp),
+                colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surface)
             ) {
                 Column(
                     modifier = Modifier
                         .fillMaxWidth()
                         .padding(16.dp),
-                    verticalArrangement = Arrangement.spacedBy(8.dp)
+                    verticalArrangement = Arrangement.spacedBy(12.dp)
                 ) {
-                    Row(
-                        modifier = Modifier.fillMaxWidth(),
-                        verticalAlignment = Alignment.CenterVertically,
-                        horizontalArrangement = Arrangement.SpaceBetween
-                    ) {
-                        Row(
-                            verticalAlignment = Alignment.CenterVertically,
-                            modifier = Modifier.weight(1f)
-                        ) {
-                            Icon(
-                                imageVector = if (selected) {
-                                    Icons.Default.CheckCircle
-                                } else {
-                                    Icons.Default.RadioButtonUnchecked
-                                },
-                                contentDescription = null,
-                                tint = if (selected) {
-                                    MaterialTheme.colorScheme.primary
-                                } else {
-                                    MaterialTheme.colorScheme.onSurfaceVariant
-                                },
-                                modifier = Modifier.size(22.dp)
-                            )
-                            Spacer(modifier = Modifier.width(10.dp))
-                            Text(
-                                text = stringResource(titleRes),
-                                style = MaterialTheme.typography.titleMedium,
-                                fontWeight = FontWeight.Bold
-                            )
-                        }
+                    Text(
+                        text = stringResource(R.string.palette_section_title),
+                        style = MaterialTheme.typography.titleMedium,
+                        fontWeight = FontWeight.Bold
+                    )
 
-                        if (isOneUi9) {
-                            Box(
-                                modifier = Modifier
-                                    .clip(RoundedCornerShape(50))
-                                    .background(Color(0xFF38BDF8).copy(alpha = 0.18f))
-                                    .padding(horizontal = 10.dp, vertical = 4.dp)
-                            ) {
-                                Row(verticalAlignment = Alignment.CenterVertically) {
-                                    Icon(
-                                        imageVector = Icons.Default.AutoAwesome,
-                                        contentDescription = null,
-                                        tint = Color(0xFF38BDF8),
-                                        modifier = Modifier.size(13.dp)
-                                    )
-                                    Spacer(modifier = Modifier.width(4.dp))
-                                    Text(
-                                        text = stringResource(R.string.style_oneui9_badge),
-                                        color = Color(0xFF38BDF8),
-                                        fontSize = 11.sp,
-                                        fontWeight = FontWeight.Bold
-                                    )
-                                }
+                    val palettes = listOf(
+                        ColorPalettePreset.GRAPHITE_SILVER to R.string.palette_graphite,
+                        ColorPalettePreset.SOFT_BLUE to R.string.palette_soft_blue,
+                        ColorPalettePreset.TEAL to R.string.palette_teal,
+                        ColorPalettePreset.MUTED_VIOLET to R.string.palette_muted_violet,
+                        ColorPalettePreset.EMERALD to R.string.palette_emerald,
+                        ColorPalettePreset.WARM_NEUTRAL to R.string.palette_warm_neutral
+                    )
+
+                    palettes.forEach { (palette, labelRes) ->
+                        val isSelected = config.palettePreset == palette
+                        Row(
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .clip(RoundedCornerShape(14.dp))
+                                .background(
+                                    if (isSelected) {
+                                        MaterialTheme.colorScheme.primaryContainer.copy(alpha = 0.3f)
+                                    } else {
+                                        MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.35f)
+                                    }
+                                )
+                                .clickable { onSelectPalette(palette) }
+                                .padding(horizontal = 14.dp, vertical = 10.dp)
+                                .testTag("palette_${palette.id}"),
+                            verticalAlignment = Alignment.CenterVertically,
+                            horizontalArrangement = Arrangement.SpaceBetween
+                        ) {
+                            Row(verticalAlignment = Alignment.CenterVertically) {
+                                Box(
+                                    modifier = Modifier
+                                        .size(22.dp)
+                                        .clip(CircleShape)
+                                        .background(Color(palette.accentHex))
+                                        .border(1.dp, Color.White.copy(alpha = 0.5f), CircleShape)
+                                )
+                                Spacer(modifier = Modifier.width(10.dp))
+                                Text(
+                                    text = stringResource(labelRes),
+                                    style = MaterialTheme.typography.bodyLarge,
+                                    fontWeight = if (isSelected) FontWeight.Bold else FontWeight.Normal
+                                )
+                            }
+                            if (isSelected) {
+                                Icon(
+                                    imageVector = Icons.Default.CheckCircle,
+                                    contentDescription = null,
+                                    tint = MaterialTheme.colorScheme.primary,
+                                    modifier = Modifier.size(20.dp)
+                                )
                             }
                         }
                     }
 
+                    HorizontalDivider(color = MaterialTheme.colorScheme.outline.copy(alpha = 0.2f))
+
+                    // 1. Custom Accent Swatches
                     Text(
-                        text = stringResource(descRes),
-                        style = MaterialTheme.typography.bodyMedium,
-                        color = MaterialTheme.colorScheme.onSurfaceVariant
+                        text = stringResource(R.string.custom_color_accent),
+                        style = MaterialTheme.typography.labelLarge,
+                        fontWeight = FontWeight.Bold
                     )
-                }
-            }
-        }
-
-        // Color Palette Presets & Custom Swatches
-        Card(
-            modifier = Modifier.fillMaxWidth(),
-            shape = RoundedCornerShape(22.dp),
-            colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surface)
-        ) {
-            Column(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(16.dp),
-                verticalArrangement = Arrangement.spacedBy(12.dp)
-            ) {
-                Text(
-                    text = stringResource(R.string.palette_section_title),
-                    style = MaterialTheme.typography.titleMedium,
-                    fontWeight = FontWeight.Bold
-                )
-
-                val palettes = listOf(
-                    ColorPalettePreset.GRAPHITE_SILVER to R.string.palette_graphite,
-                    ColorPalettePreset.SOFT_BLUE to R.string.palette_soft_blue,
-                    ColorPalettePreset.TEAL to R.string.palette_teal,
-                    ColorPalettePreset.MUTED_VIOLET to R.string.palette_muted_violet,
-                    ColorPalettePreset.EMERALD to R.string.palette_emerald,
-                    ColorPalettePreset.WARM_NEUTRAL to R.string.palette_warm_neutral
-                )
-
-                palettes.forEach { (palette, labelRes) ->
-                    val isSelected = config.palettePreset == palette
+                    val accentSwatches = listOf(
+                        0xFF38BDF8L,
+                        0xFF2DD4BFL,
+                        0xFFA78BFAL,
+                        0xFF34D399L,
+                        0xFFFBBF24L,
+                        0xFFF472B6L,
+                        0xFF60A5FAL,
+                        0xFFE2E8F0L
+                    )
                     Row(
                         modifier = Modifier
                             .fillMaxWidth()
-                            .clip(RoundedCornerShape(14.dp))
-                            .background(
-                                if (isSelected) {
-                                    MaterialTheme.colorScheme.primaryContainer.copy(alpha = 0.3f)
-                                } else {
-                                    MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.35f)
-                                }
-                            )
-                            .clickable { onSelectPalette(palette) }
-                            .padding(horizontal = 14.dp, vertical = 10.dp)
-                            .testTag("palette_${palette.id}"),
-                        verticalAlignment = Alignment.CenterVertically,
-                        horizontalArrangement = Arrangement.SpaceBetween
+                            .horizontalScroll(rememberScrollState()),
+                        horizontalArrangement = Arrangement.spacedBy(10.dp)
                     ) {
-                        Row(verticalAlignment = Alignment.CenterVertically) {
+                        accentSwatches.forEach { hex ->
+                            val active = config.accentColorHex == hex
                             Box(
                                 modifier = Modifier
-                                    .size(22.dp)
+                                    .size(36.dp)
                                     .clip(CircleShape)
-                                    .background(Color(palette.accentHex))
-                                    .border(1.dp, Color.White.copy(alpha = 0.5f), CircleShape)
-                            )
-                            Spacer(modifier = Modifier.width(10.dp))
-                            Text(
-                                text = stringResource(labelRes),
-                                style = MaterialTheme.typography.bodyLarge,
-                                fontWeight = if (isSelected) FontWeight.Bold else FontWeight.Normal
+                                    .background(Color(hex))
+                                    .border(
+                                        width = if (active) 3.dp else 1.dp,
+                                        color = if (active) Color.White else Color.White.copy(alpha = 0.3f),
+                                        shape = CircleShape
+                                    )
+                                    .clickable {
+                                        onUpdateCustomColor(hex, null, null, null, null)
+                                    }
                             )
                         }
-                        if (isSelected) {
-                            Icon(
-                                imageVector = Icons.Default.CheckCircle,
-                                contentDescription = null,
-                                tint = MaterialTheme.colorScheme.primary,
-                                modifier = Modifier.size(20.dp)
+                    }
+
+                    // 2. Custom Background Swatches
+                    Text(
+                        text = stringResource(R.string.custom_color_island_bg),
+                        style = MaterialTheme.typography.labelLarge,
+                        fontWeight = FontWeight.Bold
+                    )
+                    val bgSwatches = listOf(
+                        0xFF080C16L to 0xFF111827L,
+                        0xFF05070BL to 0xFF0F141EL,
+                        0xFF061214L to 0xFF0D2124L,
+                        0xFF0D0A1AL to 0xFF1A142EL,
+                        0xFF06120EL to 0xFF0F241DL,
+                        0xFF171311L to 0xFF261F1BL
+                    )
+                    Row(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .horizontalScroll(rememberScrollState()),
+                        horizontalArrangement = Arrangement.spacedBy(10.dp)
+                    ) {
+                        bgSwatches.forEach { (islandBgHex, notifBgHex) ->
+                            val active = config.islandBgColorHex == islandBgHex
+                            Box(
+                                modifier = Modifier
+                                    .size(36.dp)
+                                    .clip(CircleShape)
+                                    .background(Color(notifBgHex))
+                                    .border(
+                                        width = if (active) 3.dp else 1.dp,
+                                        color = if (active) Color(config.accentColorHex) else Color.White.copy(alpha = 0.3f),
+                                        shape = CircleShape
+                                    )
+                                    .clickable {
+                                        onUpdateCustomColor(null, islandBgHex, notifBgHex, null, null)
+                                    }
+                            )
+                        }
+                    }
+
+                    // 3. Custom Border Color Swatches
+                    Text(
+                        text = stringResource(R.string.custom_color_border),
+                        style = MaterialTheme.typography.labelLarge,
+                        fontWeight = FontWeight.Bold
+                    )
+                    val borderSwatches = listOf(
+                        0xFF334155L,
+                        0xFF1E3A8AL,
+                        0xFF38BDF8L,
+                        0xFF2DD4BFL,
+                        0xFFA78BFAL,
+                        0xFF34D399L,
+                        0xFFFBBF24L,
+                        0xFFF8FAFCL
+                    )
+                    Row(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .horizontalScroll(rememberScrollState()),
+                        horizontalArrangement = Arrangement.spacedBy(10.dp)
+                    ) {
+                        borderSwatches.forEach { borderHex ->
+                            val active = config.borderColorHex == borderHex
+                            Box(
+                                modifier = Modifier
+                                    .size(36.dp)
+                                    .clip(CircleShape)
+                                    .background(Color(borderHex))
+                                    .border(
+                                        width = if (active) 3.dp else 1.dp,
+                                        color = if (active) Color.White else Color.White.copy(alpha = 0.3f),
+                                        shape = CircleShape
+                                    )
+                                    .clickable {
+                                        onUpdateCustomColor(null, null, null, null, borderHex)
+                                    }
                             )
                         }
                     }
                 }
+            }
 
-                HorizontalDivider(color = MaterialTheme.colorScheme.outline.copy(alpha = 0.2f))
-
-                // Quick Custom Accent Swatches
-                Text(
-                    text = stringResource(R.string.custom_color_accent),
-                    style = MaterialTheme.typography.labelLarge,
-                    fontWeight = FontWeight.Bold
-                )
-                val accentSwatches = listOf(
-                    0xFF38BDF8L,
-                    0xFF2DD4BFL,
-                    0xFFA78BFAL,
-                    0xFF34D399L,
-                    0xFFFBBF24L,
-                    0xFFF472B6L,
-                    0xFF60A5FAL,
-                    0xFFE2E8F0L
-                )
-                Row(
+            // Shared Element Visibility Toggles
+            Card(
+                modifier = Modifier.fillMaxWidth(),
+                shape = RoundedCornerShape(22.dp),
+                colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surface)
+            ) {
+                Column(
                     modifier = Modifier
                         .fillMaxWidth()
-                        .horizontalScroll(rememberScrollState()),
-                    horizontalArrangement = Arrangement.spacedBy(10.dp)
+                        .padding(16.dp),
+                    verticalArrangement = Arrangement.spacedBy(6.dp)
                 ) {
-                    accentSwatches.forEach { hex ->
-                        val active = config.accentColorHex == hex
-                        Box(
-                            modifier = Modifier
-                                .size(36.dp)
-                                .clip(CircleShape)
-                                .background(Color(hex))
-                                .border(
-                                    width = if (active) 3.dp else 1.dp,
-                                    color = if (active) Color.White else Color.White.copy(alpha = 0.3f),
-                                    shape = CircleShape
-                                )
-                                .clickable {
-                                    onUpdateCustomColor(hex, null, null, null)
-                                }
-                        )
-                    }
+                    Text(
+                        text = stringResource(R.string.style_controls_title),
+                        style = MaterialTheme.typography.titleMedium,
+                        fontWeight = FontWeight.Bold
+                    )
+
+                    StyleToggleRow(
+                        label = stringResource(R.string.toggle_show_app_icon),
+                        checked = config.showAppIcon,
+                        onCheckedChange = {
+                            onUpdateVisibility(it, null, null, null, null, null, null, null)
+                        }
+                    )
+                    StyleToggleRow(
+                        label = stringResource(R.string.toggle_show_app_name),
+                        checked = config.showAppName,
+                        onCheckedChange = {
+                            onUpdateVisibility(null, it, null, null, null, null, null, null)
+                        }
+                    )
+                    StyleToggleRow(
+                        label = stringResource(R.string.toggle_show_title),
+                        checked = config.showTitle,
+                        onCheckedChange = {
+                            onUpdateVisibility(null, null, it, null, null, null, null, null)
+                        }
+                    )
+                    StyleToggleRow(
+                        label = stringResource(R.string.toggle_show_message),
+                        checked = config.showMessagePreview,
+                        onCheckedChange = {
+                            onUpdateVisibility(null, null, null, it, null, null, null, null)
+                        }
+                    )
+                    StyleToggleRow(
+                        label = stringResource(R.string.toggle_show_timestamp),
+                        checked = config.showTimestamp,
+                        onCheckedChange = {
+                            onUpdateVisibility(null, null, null, null, it, null, null, null)
+                        }
+                    )
+                    StyleToggleRow(
+                        label = stringResource(R.string.toggle_group_same_app),
+                        checked = config.groupSameApp,
+                        onCheckedChange = {
+                            onUpdateVisibility(null, null, null, null, null, it, null, null)
+                        }
+                    )
+                    StyleToggleRow(
+                        label = stringResource(R.string.toggle_auto_expand),
+                        checked = config.autoExpandNotifications,
+                        onCheckedChange = {
+                            onUpdateVisibility(null, null, null, null, null, null, it, null)
+                        }
+                    )
+                    StyleToggleRow(
+                        label = stringResource(R.string.toggle_always_show_pill),
+                        checked = config.keepIdlePillVisible,
+                        onCheckedChange = {
+                            onUpdateVisibility(null, null, null, null, null, null, null, it)
+                        }
+                    )
                 }
             }
+
+            Spacer(modifier = Modifier.height(16.dp))
         }
-
-        // Shared Element Visibility Toggles
-        Card(
-            modifier = Modifier.fillMaxWidth(),
-            shape = RoundedCornerShape(22.dp),
-            colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surface)
-        ) {
-            Column(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(16.dp),
-                verticalArrangement = Arrangement.spacedBy(6.dp)
-            ) {
-                Text(
-                    text = stringResource(R.string.style_controls_title),
-                    style = MaterialTheme.typography.titleMedium,
-                    fontWeight = FontWeight.Bold
-                )
-
-                StyleToggleRow(
-                    label = stringResource(R.string.toggle_show_app_icon),
-                    checked = config.showAppIcon,
-                    onCheckedChange = {
-                        onUpdateVisibility(it, null, null, null, null, null, null, null)
-                    }
-                )
-                StyleToggleRow(
-                    label = stringResource(R.string.toggle_show_app_name),
-                    checked = config.showAppName,
-                    onCheckedChange = {
-                        onUpdateVisibility(null, it, null, null, null, null, null, null)
-                    }
-                )
-                StyleToggleRow(
-                    label = stringResource(R.string.toggle_show_title),
-                    checked = config.showTitle,
-                    onCheckedChange = {
-                        onUpdateVisibility(null, null, it, null, null, null, null, null)
-                    }
-                )
-                StyleToggleRow(
-                    label = stringResource(R.string.toggle_show_message),
-                    checked = config.showMessagePreview,
-                    onCheckedChange = {
-                        onUpdateVisibility(null, null, null, it, null, null, null, null)
-                    }
-                )
-                StyleToggleRow(
-                    label = stringResource(R.string.toggle_show_timestamp),
-                    checked = config.showTimestamp,
-                    onCheckedChange = {
-                        onUpdateVisibility(null, null, null, null, it, null, null, null)
-                    }
-                )
-                StyleToggleRow(
-                    label = stringResource(R.string.toggle_group_same_app),
-                    checked = config.groupSameApp,
-                    onCheckedChange = {
-                        onUpdateVisibility(null, null, null, null, null, it, null, null)
-                    }
-                )
-                StyleToggleRow(
-                    label = stringResource(R.string.toggle_auto_expand),
-                    checked = config.autoExpandNotifications,
-                    onCheckedChange = {
-                        onUpdateVisibility(null, null, null, null, null, null, it, null)
-                    }
-                )
-                StyleToggleRow(
-                    label = stringResource(R.string.toggle_always_show_pill),
-                    checked = config.keepIdlePillVisible,
-                    onCheckedChange = {
-                        onUpdateVisibility(null, null, null, null, null, null, null, it)
-                    }
-                )
-            }
-        }
-
-        Spacer(modifier = Modifier.height(16.dp))
     }
 }
 
